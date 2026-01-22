@@ -1,13 +1,21 @@
+import { Suspense } from 'react';
 import { getPhones } from '@/services/api';
-import { PhoneCard } from '@/components/phone';
+import { PhoneCard, SearchBar } from '@/components/phone';
 import styles from './page.module.scss';
 
-export default async function Home() {
-  const phones = await getPhones();
+interface HomeProps {
+  searchParams: Promise<{ search?: string }>;
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+  const { search } = await searchParams;
+  const phones = await getPhones(search);
 
   return (
-    <main className={styles.main}>
-      <div className={styles.resultsCount}>{phones.length} RESULTS</div>
+    <main>
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchBar resultsCount={phones.length} />
+      </Suspense>
       <div className={styles.grid}>
         {phones.map((phone, index) => (
           <PhoneCard key={`${phone.id}-${index}`} phone={phone} />
