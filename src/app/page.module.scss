@@ -1,0 +1,33 @@
+.main {
+  padding: 16px;
+
+  @media (min-width: 768px) {
+    padding: 24px 40px;
+  }
+
+  @media (min-width: 1200px) {
+    padding: 24px 100px;
+  }
+}
+
+.resultsCount {
+  font-size: 12px;
+  font-weight: 300;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  // Tablet
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // Desktop
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
