@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.scss";
+import type { Metadata } from 'next';
+import './globals.scss';
 
 export const metadata: Metadata = {
-  title: "Mobile Store",
-  description: "Catálogo de teléfonos móviles - Zara Challenge",
+  title: 'Mobile Store',
+  description: 'Zara Challenge',
 };
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="en">
       <body>{children}</body>
     </html>
   );
