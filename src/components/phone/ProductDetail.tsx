@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { PhoneDetail, StorageOption, ColorOption } from '@/types';
 import { ProductCarousel } from './ProductCarousel';
 import styles from './ProductDetail.module.scss';
+import { useCart } from '@/context/CartContext';
 
 interface ProductDetailProps {
   phone: PhoneDetail;
@@ -20,6 +21,7 @@ export function ProductDetail({ phone }: ProductDetailProps) {
   const mainImage = selectedColor?.imageUrl ?? phone.colorOptions?.[0]?.imageUrl ?? null;
 
   const isAddToCartEnabled = selectedStorage !== null && selectedColor !== null;
+  const { addItem } = useCart();
 
   const handleStorageSelect = useCallback(
     (storage: StorageOption) => {
@@ -153,11 +155,18 @@ export function ProductDetail({ phone }: ProductDetailProps) {
               onClick={() => {
                 if (!isAddToCartEnabled) return;
 
-                console.log('Add to cart:', {
+                const lineId = `${phone.id}-${selectedStorage!.capacity}-${selectedColor!.hexCode}`;
+
+                addItem({
+                  lineId,
                   phoneId: phone.id,
-                  storage: selectedStorage,
-                  color: selectedColor,
-                  price: displayPrice,
+                  name: phone.name,
+                  brand: phone.brand,
+                  imageUrl: selectedColor!.imageUrl ?? null,
+                  storage: selectedStorage!.capacity,
+                  colorName: selectedColor!.name,
+                  colorHex: selectedColor!.hexCode,
+                  unitPrice: displayPrice,
                 });
               }}
             >

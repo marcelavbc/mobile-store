@@ -4,7 +4,15 @@
 }
 
 .header {
-  padding: 18px 18px 8px 18px;
+  padding: 18px 16px 8px 16px;
+
+  @media (min-width: 768px) {
+    padding: 18px 40px 8px 40px;
+  }
+
+  @media (min-width: 1200px) {
+    padding: 18px 100px 8px 100px;
+  }
 }
 
 .back {
@@ -13,13 +21,26 @@
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
 }
 
 .container {
   max-width: 420px;
   margin: 0 auto;
-  padding: 0 18px 28px 18px;
+  padding: 0 16px 28px 16px;
   display: block;
+
+  @media (min-width: 768px) {
+    padding: 0 40px 28px 40px;
+  }
+
+  @media (min-width: 1200px) {
+    padding: 0 100px 28px 100px;
+  }
 }
 
 .media {
@@ -78,7 +99,8 @@
 /* STORAGE */
 .storageGroup {
   display: grid;
-  grid-template-columns: repeat(3, 89px);
+  grid-auto-columns: 89px;
+  grid-auto-flow: column;
   border: 1px solid #cccccc;
   width: fit-content;
 }
@@ -97,6 +119,11 @@
   cursor: pointer;
   display: grid;
   place-items: center;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
 }
 
 .storageOption + .storageOption {
@@ -106,6 +133,7 @@
 .storageOption[aria-pressed='true'] {
   outline: 1px solid #111;
   outline-offset: -1px;
+  background-color: #f5f5f5;
 }
 
 .purchase {
@@ -177,11 +205,16 @@
   border: 1px solid #cccccc;
   cursor: pointer;
   flex-shrink: 0;
-  transition: border-color 0.2s ease;
-}
+  transition: border-color 0.2s ease, transform 0.1s ease;
 
-.color:hover {
-  border-color: #999;
+  &:hover {
+    border-color: #999;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .color[aria-pressed='true'] {
@@ -212,6 +245,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+    background-color: #333;
+  }
+
+  &:active:not(:disabled) {
+    opacity: 0.8;
+  }
 }
 
 .cta:disabled {
@@ -296,5 +339,10 @@
     grid-template-columns: 420px 1fr;
     column-gap: 48px;
     align-items: start;
+    padding: 0;
+  }
+
+  .header {
+    padding: 18px 100px 8px 100px;
   }
 }
