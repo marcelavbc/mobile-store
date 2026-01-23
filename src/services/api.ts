@@ -15,7 +15,7 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
  * Base fetch wrapper with authentication headers
  */
 async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const url = `${API_URL}${endpoint}`;
+  const url = `${API_URL?.replace(/\/$/, '')}${endpoint}`;
 
   const response = await fetch(url, {
     ...options,

@@ -9,7 +9,7 @@ interface PhoneCardProps {
 
 export function PhoneCard({ phone }: PhoneCardProps) {
   return (
-    <Link href={`/product/${phone.id}`} className={styles.card}>
+    <Link href={`/products/${phone.id}`} className={styles.card}>
       <div className={styles.imageWrapper}>
         <Image
           src={phone.imageUrl}
