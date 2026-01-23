@@ -1,5 +1,5 @@
 import { getPhoneById } from '@/services/api';
-import { ProductDetail } from '../../../components/phone/ProductDetail';
+import { ProductDetail } from '@/components/product';
 
 type PageProps = {
   params: Promise<{ id: string }>;

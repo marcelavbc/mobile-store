@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { Phone } from '@/types';
-import { PhoneCard } from './PhoneCard';
+import { PhoneCard } from '@/components/catalog';
 import styles from './ProductCarousel.module.scss';
 
 interface ProductCarouselProps {

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Phone } from '@/types';
 import { getPhones } from '@/services/api';
-import { SearchBar } from './SearchBar';
+import { SearchBar } from '@/components/ui';
 import { PhoneCard } from './PhoneCard';
 import styles from './PhoneList.module.scss';
 

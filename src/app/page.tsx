@@ -1,5 +1,5 @@
 import { getPhones } from '@/services/api';
-import { PhoneList } from '@/components/phone';
+import { PhoneList } from '@/components/catalog';
 
 export default async function Home() {
   // Server-side fetch - fast initial load, SEO friendly
