@@ -1,124 +1,65 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { CartItem } from '@/types';
 
-// ============================================
-// Types
-// ============================================
-
-interface CartContextType {
+type CartContextValue = {
   items: CartItem[];
-  itemCount: number;
+  addItem: (item: CartItem) => void;
+  removeItem: (lineId: string) => void;
+  clear: () => void;
   totalPrice: number;
-  addItem: (item: Omit<CartItem, 'id' | 'quantity'>) => void;
-  removeItem: (id: string) => void;
-  clearCart: () => void;
-}
+  count: number;
+};
 
-// ============================================
-// Context
-// ============================================
+const CartContext = createContext<CartContextValue | null>(null);
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const STORAGE_KEY = 'mobile_store_cart_v1';
 
-const CART_STORAGE_KEY = 'mobile-store-cart';
-
-// ============================================
-// Provider
-// ============================================
-
-export function CartProvider({ children }: { children: ReactNode }) {
+export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
 
-  // Load cart from localStorage on mount
+  // Load
   useEffect(() => {
-    const stored = localStorage.getItem(CART_STORAGE_KEY);
-    if (stored) {
-      try {
-        setItems(JSON.parse(stored));
-      } catch (error) {
-        console.error('Error parsing cart from localStorage:', error);
-      }
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) setItems(JSON.parse(raw));
+    } catch {
+      // ignore
     }
-    setIsHydrated(true);
   }, []);
 
-  // Save cart to localStorage when items change
+  // Persist
   useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // ignore
     }
-  }, [items, isHydrated]);
+  }, [items]);
 
-  // Calculate item count
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-
-  // Calculate total price
-  const totalPrice = items.reduce((sum, item) => sum + item.storage.price * item.quantity, 0);
-
-  // Add item to cart
-  const addItem = (newItem: Omit<CartItem, 'id' | 'quantity'>) => {
-    setItems((prev) => {
-      // Check if item with same phone, color, and storage already exists
-      const existingIndex = prev.findIndex(
-        (item) =>
-          item.phoneId === newItem.phoneId &&
-          item.color.name === newItem.color.name &&
-          item.storage.capacity === newItem.storage.capacity
-      );
-
-      if (existingIndex >= 0) {
-        // Increment quantity
-        const updated = [...prev];
-        updated[existingIndex] = {
-          ...updated[existingIndex],
-          quantity: updated[existingIndex].quantity + 1,
-        };
-        return updated;
-      }
-
-      // Add new item
-      const id = `${newItem.phoneId}-${newItem.color.name}-${newItem.storage.capacity}-${Date.now()}`;
-      return [...prev, { ...newItem, id, quantity: 1 }];
-    });
+  const addItem = (item: CartItem) => {
+    // Spec says: show phones added; no quantity UI in Figma.
+    // We’ll avoid duplicates by lineId (same phone+storage+color).
+    setItems((prev) => (prev.some((p) => p.lineId === item.lineId) ? prev : [...prev, item]));
   };
 
-  // Remove item from cart
-  const removeItem = (id: string) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+  const removeItem = (lineId: string) => {
+    setItems((prev) => prev.filter((p) => p.lineId !== lineId));
   };
 
-  // Clear all items from cart
-  const clearCart = () => {
-    setItems([]);
-  };
+  const clear = () => setItems([]);
 
-  return (
-    <CartContext.Provider
-      value={{
-        items,
-        itemCount,
-        totalPrice,
-        addItem,
-        removeItem,
-        clearCart,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+  const totalPrice = useMemo(() => items.reduce((sum, i) => sum + i.unitPrice, 0), [items]);
+  const count = items.length;
+
+  const value: CartContextValue = { items, addItem, removeItem, clear, totalPrice, count };
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
-// ============================================
-// Hook
-// ============================================
-
 export function useCart() {
-  const context = useContext(CartContext);
-  if (context === undefined) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  return context;
+  const ctx = useContext(CartContext);
+  if (!ctx) throw new Error('useCart must be used within CartProvider');
+  return ctx;
 }

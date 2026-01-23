@@ -50,14 +50,15 @@ export interface StorageOption {
 // ============================================
 
 export interface CartItem {
-  id: string;
+  lineId: string;
   phoneId: string;
   name: string;
   brand: string;
-  imageUrl: string;
-  color: ColorOption;
-  storage: StorageOption;
-  quantity: number;
+  imageUrl: string | null;
+  storage: string;
+  colorName: string;
+  colorHex: string;
+  unitPrice: number;
 }
 
 // ============================================

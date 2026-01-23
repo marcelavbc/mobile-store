@@ -1,0 +1,173 @@
+.page {
+  min-height: calc(100vh - var(--navbar-height));
+  background: #fff;
+}
+
+.container {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 0 18px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--navbar-height));
+}
+
+/* Title */
+.title {
+  margin: 18px 0 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111;
+}
+
+/* EMPTY STATE */
+.spacer {
+  flex: 1;
+}
+
+.bottom {
+  padding: 18px 0 24px;
+}
+
+.continue {
+  display: grid;
+  place-items: center;
+  height: 48px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #111;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #fff;
+}
+
+/* LIST */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 18px;
+  align-items: start;
+  padding: 22px 0;
+}
+
+.thumb {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  background: #fff;
+}
+
+.thumbImg {
+  object-fit: contain;
+  padding: 6px;
+}
+
+.info {
+  display: grid;
+  gap: 0;
+  align-content: start;
+}
+
+.productName {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111;
+}
+
+.meta {
+  margin: 4px 0 0 0;
+  font-size: 10px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.price {
+  margin: 12px 0 0 0;
+  font-size: 11px;
+  color: #111;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.remove {
+  margin-top: 10px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #d22;
+  font-size: 11px;
+  cursor: pointer;
+  width: fit-content;
+  letter-spacing: 0.02em;
+}
+
+/* FOOTER (bottom area) */
+.footer {
+  margin-top: auto;
+  padding: 0 0 24px;
+  background: #fff;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+}
+
+.totalLabel {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.totalValue {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #111;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.continueFooter {
+  display: grid;
+  place-items: center;
+  height: 48px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #111;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #fff;
+}
+
+.pay {
+  height: 48px;
+  border: 0;
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
