@@ -17,8 +17,10 @@ export function Navbar() {
       </Link>
 
       <Link href="/cart" className={styles.cartLink} aria-label={`Go to cart (${count} items)`}>
-        <CartIcon filled={count > 0} />
-        <span className={styles.cartCount}>CART ({count})</span>
+        <span className={styles.cartPill}>
+          <CartIcon filled={count > 0} />
+          <span className={styles.cartCount}>{count}</span>
+        </span>
       </Link>
     </header>
   );
