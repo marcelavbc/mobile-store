@@ -1,0 +1,300 @@
+.page {
+  min-height: 100vh;
+  background: #fff;
+}
+
+.header {
+  padding: 18px 18px 8px 18px;
+}
+
+.back {
+  text-decoration: none;
+  color: #111;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.container {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 0 18px 28px 18px;
+  display: block;
+}
+
+.media {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.image {
+  object-fit: contain;
+  padding: 0;
+}
+
+.imageFallback {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #777;
+  font-size: 14px;
+}
+
+.content {
+  display: grid;
+  gap: 18px;
+}
+
+.titleBlock {
+  margin-top: 26px;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #111;
+}
+
+.price {
+  margin: 8px 0 0 0;
+  font-size: 12px;
+  color: #666;
+}
+
+/* STORAGE */
+.storageGroup {
+  display: grid;
+  grid-template-columns: repeat(3, 89px);
+  border: 1px solid #cccccc;
+  width: fit-content;
+}
+
+.storageOption {
+  position: relative;
+  appearance: none;
+  height: 48px;
+  border: 0;
+  background: #fff;
+  padding: 0;
+  font-size: 12px;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.storageOption + .storageOption {
+  border-left: 1px solid #cccccc;
+}
+
+.storageOption[aria-pressed='true'] {
+  outline: 1px solid #111;
+  outline-offset: -1px;
+}
+
+.purchase {
+  padding-top: 14px;
+  display: grid;
+  gap: 24px;
+}
+
+.description {
+  margin: 0;
+  color: #444;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.section {
+  display: grid;
+  gap: 12px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  cursor: pointer;
+  min-width: 88px;
+  text-align: left;
+}
+
+.pillTop {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+}
+
+.pillBottom {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.colors {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.color {
+  width: 24px;
+  height: 24px;
+  border-radius: 0;
+  border: 1px solid #cccccc;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease;
+}
+
+.color:hover {
+  border-color: #999;
+}
+
+.color[aria-pressed='true'] {
+  outline: 2px solid #111;
+  outline-offset: -2px;
+}
+
+.colorName {
+  margin: 0;
+  font-size: 12px;
+  color: #111;
+  text-transform: capitalize;
+}
+
+.cta {
+  width: 100%;
+  height: 48px;
+  border: 0;
+  border-radius: 0;
+  padding: 5px 7px;
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.ctaHint {
+  margin: 0;
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+}
+
+.blockTitle {
+  margin: 0 0 10px 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+/* SPECIFICATIONS  */
+.specs {
+  margin-top: 40px;
+  padding-top: 14px;
+}
+.specsTitle {
+  margin: 0 0 18px 0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111;
+}
+
+.specList {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #bdbdbd;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.specItem {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 18px;
+  padding: 14px 0;
+  border-top: 1px solid #bdbdbd;
+  align-items: start;
+}
+
+.specItem:first-child {
+  border-top: 0;
+}
+
+.specItem dt {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.specItem dd {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #111;
+  max-width: none;
+}
+
+.specItemDescription dd {
+  max-width: 260px;
+}
+
+/* desktop */
+@media (min-width: 900px) {
+  .container {
+    max-width: 980px;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    column-gap: 48px;
+    align-items: start;
+  }
+}
