@@ -1,26 +1,13 @@
-import { Suspense } from 'react';
 import { getPhones } from '@/services/api';
-import { PhoneCard, SearchBar } from '@/components/phone';
-import styles from './page.module.scss';
+import { PhoneList } from '@/components/phone';
 
-interface HomeProps {
-  searchParams: Promise<{ search?: string }>;
-}
-
-export default async function Home({ searchParams }: HomeProps) {
-  const { search } = await searchParams;
-  const phones = await getPhones(search);
+export default async function Home() {
+  // Server-side fetch - fast initial load, SEO friendly
+  const initialPhones = await getPhones();
 
   return (
     <main>
-      <Suspense fallback={<div>Loading...</div>}>
-        <SearchBar resultsCount={phones.length} />
-      </Suspense>
-      <div className={styles.grid}>
-        {phones.map((phone, index) => (
-          <PhoneCard key={`${phone.id}-${index}`} phone={phone} />
-        ))}
-      </div>
+      <PhoneList initialPhones={initialPhones} />
     </main>
   );
 }
