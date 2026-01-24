@@ -1,0 +1,33 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px 32px;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .page {
+    padding: 24px 40px 48px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1200px) {
+  .page {
+    padding: 24px 100px 64px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

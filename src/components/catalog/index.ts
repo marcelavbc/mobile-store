@@ -1,2 +1,2 @@
 export { PhoneCard } from './PhoneCard';
-export { PhoneList } from './PhoneList';
+export { Catalog } from './Catalog';

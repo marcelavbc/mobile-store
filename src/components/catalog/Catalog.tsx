@@ -5,21 +5,20 @@ import { Phone } from '@/types';
 import { getPhones } from '@/services/api';
 import { SearchBar } from '@/components/ui';
 import { PhoneCard } from './PhoneCard';
-import styles from './PhoneList.module.scss';
+import styles from './Catalog.module.scss';
 
-interface PhoneListProps {
-  initialPhones: Phone[];
+interface CatalogProps {
+  initialProducts: Phone[];
 }
 
-export function PhoneList({ initialPhones }: PhoneListProps) {
-  const [phones, setPhones] = useState<Phone[]>(initialPhones);
+export function Catalog({ initialProducts }: CatalogProps) {
+  const [phones, setPhones] = useState<Phone[]>(initialProducts);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Skip fetch if search is empty - use initial data
     if (!search) {
-      setPhones(initialPhones);
+      setPhones(initialProducts);
       return;
     }
 
@@ -37,10 +36,10 @@ export function PhoneList({ initialPhones }: PhoneListProps) {
 
     const timer = setTimeout(fetchPhones, 300);
     return () => clearTimeout(timer);
-  }, [search, initialPhones]);
+  }, [search, initialProducts]);
 
   return (
-    <div>
+    <div className={styles.page}>
       <SearchBar
         value={search}
         onChange={setSearch}
@@ -48,6 +47,7 @@ export function PhoneList({ initialPhones }: PhoneListProps) {
         resultsCount={phones.length}
         isLoading={isLoading}
       />
+
       <div className={styles.grid}>
         {phones.map((phone, index) => (
           <PhoneCard key={`${phone.id}-${index}`} phone={phone} />
