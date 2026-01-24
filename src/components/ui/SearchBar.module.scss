@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 12px 0px;
   background: var(--color-background);
 }
 
@@ -56,20 +56,4 @@
   letter-spacing: 0;
   text-transform: uppercase;
   color: var(--color-text-primary);
-}
-
-/* Tablet */
-@media (min-width: 768px) {
-  .wrapper {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-}
-
-/* Desktop */
-@media (min-width: 1200px) {
-  .wrapper {
-    padding-left: 100px;
-    padding-right: 100px;
-  }
 }

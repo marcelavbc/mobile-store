@@ -15,10 +15,11 @@ export function PhoneCard({ phone }: PhoneCardProps) {
           src={phone.imageUrl}
           alt={`${phone.brand} ${phone.name}`}
           fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           className={styles.image}
+          priority={false}
         />
       </div>
+
       <div className={styles.info}>
         <div className={styles.details}>
           <span className={styles.brand}>{phone.brand}</span>
