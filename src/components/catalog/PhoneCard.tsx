@@ -16,6 +16,7 @@ export function PhoneCard({ phone }: PhoneCardProps) {
           alt={`${phone.brand} ${phone.name}`}
           fill
           className={styles.image}
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
         />
       </div>
 
