@@ -16,7 +16,6 @@ export function PhoneCard({ phone }: PhoneCardProps) {
           alt={`${phone.brand} ${phone.name}`}
           fill
           className={styles.image}
-          priority={false}
         />
       </div>
 
