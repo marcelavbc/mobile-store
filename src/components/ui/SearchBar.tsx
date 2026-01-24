@@ -1,4 +1,5 @@
 import styles from './SearchBar.module.scss';
+import { CloseIcon } from '@/components/icons';
 
 interface SearchBarProps {
   value: string;
@@ -33,7 +34,7 @@ export function SearchBar({
             aria-label="Clear search"
             type="button"
           >
-            ✕
+            <CloseIcon />
           </button>
         )}
       </div>

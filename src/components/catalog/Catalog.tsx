@@ -40,19 +40,21 @@ export function Catalog({ initialProducts }: CatalogProps) {
 
   return (
     <div className={styles.page}>
-      <SearchBar
-        value={search}
-        onChange={setSearch}
-        onClear={() => setSearch('')}
-        resultsCount={phones.length}
-        isLoading={isLoading}
-      />
+      <section className={styles.searchSticky}>
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          onClear={() => setSearch('')}
+          resultsCount={phones.length}
+          isLoading={isLoading}
+        />
+      </section>
 
-      <div className={styles.grid}>
+      <section className={styles.grid}>
         {phones.map((phone, index) => (
           <PhoneCard key={`${phone.id}-${index}`} phone={phone} />
         ))}
-      </div>
+      </section>
     </div>
   );
 }
