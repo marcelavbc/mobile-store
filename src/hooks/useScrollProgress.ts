@@ -50,6 +50,10 @@ export function useScrollProgress(options: UseScrollProgressOptions = {}) {
       el.removeEventListener('scroll', updateProgress);
       window.removeEventListener('resize', updateProgress);
     };
+    // ESLint cannot statically analyze spread operator in dependency arrays.
+    // This is intentional: dependencies are dynamic and provided by the caller.
+    // The spread operator is the correct pattern for dynamic dependency lists.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateProgress, ...dependencies]);
 
   return { ref: elementRef, progress };

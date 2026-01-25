@@ -5,7 +5,15 @@ import { CartItem } from '@/types';
 
 // Mock Next.js Link component
 jest.mock('next/link', () => {
-  return ({ children, href, ...props }: { children: React.ReactNode; href: string }) => {
+  return function MockLink({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode;
+    href: string;
+    [key: string]: unknown;
+  }) {
     return (
       <a href={href} {...props}>
         {children}
@@ -28,7 +36,7 @@ jest.mock('@/components/icons/CartIcon', () => ({
 }));
 
 // Helper function to render Navbar with cart context
-function renderNavbarWithCart(items: CartItem[] = []) {
+function renderNavbarWithCart() {
   return render(
     <CartProvider>
       <Navbar />

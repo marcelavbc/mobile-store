@@ -15,10 +15,10 @@ jest.mock('@/context/CartContext', () => ({
 
 // Mock child components
 jest.mock('../ProductCarousel', () => ({
-  ProductCarousel: jest.fn(({ products, title }) => (
+  ProductCarousel: jest.fn(({ products, title }: { products: Phone[]; title?: string }) => (
     <div data-testid="product-carousel">
       {title && <h2>{title}</h2>}
-      {products.map((p: any) => (
+      {products.map((p) => (
         <div key={p.id} data-testid={`similar-${p.id}`}>
           {p.name}
         </div>
@@ -34,17 +34,35 @@ jest.mock('@/components/icons', () => ({
 // Mock next/image and next/link
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: ({ src, alt, fill, priority, ...props }: any) => (
-    <img src={src} alt={alt} data-testid="product-image" {...props} />
-  ),
+  default: function MockImage({
+    src,
+    alt,
+    ...props
+  }: {
+    src: string;
+    alt: string;
+    [key: string]: unknown;
+  }) {
+    return <img src={src} alt={alt} data-testid="product-image" {...props} />;
+  },
 }));
 
 jest.mock('next/link', () => {
-  return ({ children, href, ...props }: any) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  );
+  return function MockLink({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode;
+    href: string;
+    [key: string]: unknown;
+  }) {
+    return (
+      <a href={href} {...props}>
+        {children}
+      </a>
+    );
+  };
 });
 
 // Mock utils
@@ -442,10 +460,10 @@ describe('ProductDetail', () => {
   });
 
   it('handles phone with null storageOptions', () => {
-    const phoneWithNullStorage: PhoneDetail = {
+    const phoneWithNullStorage = {
       ...mockPhone,
-      storageOptions: null as any,
-    };
+      storageOptions: null,
+    } as PhoneDetail;
 
     mockUseProductSelection.mockReturnValue({
       selectedStorage: null,
@@ -465,10 +483,10 @@ describe('ProductDetail', () => {
   });
 
   it('handles phone with undefined storageOptions', () => {
-    const phoneWithUndefinedStorage: PhoneDetail = {
+    const phoneWithUndefinedStorage = {
       ...mockPhone,
-      storageOptions: undefined as any,
-    };
+      storageOptions: undefined,
+    } as PhoneDetail;
 
     mockUseProductSelection.mockReturnValue({
       selectedStorage: null,
@@ -487,10 +505,10 @@ describe('ProductDetail', () => {
   });
 
   it('handles phone with null colorOptions', () => {
-    const phoneWithNullColor: PhoneDetail = {
+    const phoneWithNullColor = {
       ...mockPhone,
-      colorOptions: null as any,
-    };
+      colorOptions: null,
+    } as PhoneDetail;
 
     mockUseProductSelection.mockReturnValue({
       selectedStorage: null,
@@ -509,10 +527,10 @@ describe('ProductDetail', () => {
   });
 
   it('handles phone with undefined colorOptions', () => {
-    const phoneWithUndefinedColor: PhoneDetail = {
+    const phoneWithUndefinedColor = {
       ...mockPhone,
-      colorOptions: undefined as any,
-    };
+      colorOptions: undefined,
+    } as PhoneDetail;
 
     mockUseProductSelection.mockReturnValue({
       selectedStorage: null,
@@ -531,10 +549,10 @@ describe('ProductDetail', () => {
   });
 
   it('handles phone with null similarProducts', () => {
-    const phoneWithNullSimilar: PhoneDetail = {
+    const phoneWithNullSimilar = {
       ...mockPhone,
-      similarProducts: null as any,
-    };
+      similarProducts: null,
+    } as PhoneDetail;
 
     render(<ProductDetail phone={phoneWithNullSimilar} />);
 
@@ -542,10 +560,10 @@ describe('ProductDetail', () => {
   });
 
   it('handles phone with undefined similarProducts', () => {
-    const phoneWithUndefinedSimilar: PhoneDetail = {
+    const phoneWithUndefinedSimilar = {
       ...mockPhone,
-      similarProducts: undefined as any,
-    };
+      similarProducts: undefined,
+    } as PhoneDetail;
 
     render(<ProductDetail phone={phoneWithUndefinedSimilar} />);
 
@@ -626,8 +644,8 @@ describe('ProductDetail', () => {
     const colorWithoutImage = {
       name: 'Black',
       hexCode: '#000000',
-      imageUrl: null as any,
-    };
+      imageUrl: null,
+    } as PhoneDetail['colorOptions'][0];
 
     const phoneWithColorNoImage: PhoneDetail = {
       ...mockPhone,

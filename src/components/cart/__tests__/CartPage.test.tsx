@@ -18,17 +18,35 @@ jest.mock('@/utils/cart', () => ({
 // Mock next/image and next/link
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: ({ src, alt, fill, ...props }: any) => (
-    <img src={src} alt={alt} data-testid="cart-item-image" {...props} />
-  ),
+  default: function MockImage({
+    src,
+    alt,
+    ...props
+  }: {
+    src: string;
+    alt: string;
+    [key: string]: unknown;
+  }) {
+    return <img src={src} alt={alt} data-testid="cart-item-image" {...props} />;
+  },
 }));
 
 jest.mock('next/link', () => {
-  return ({ children, href, ...props }: any) => (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  );
+  return function MockLink({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode;
+    href: string;
+    [key: string]: unknown;
+  }) {
+    return (
+      <a href={href} {...props}>
+        {children}
+      </a>
+    );
+  };
 });
 
 import { useCart } from '@/context/CartContext';

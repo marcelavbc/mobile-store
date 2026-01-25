@@ -88,11 +88,6 @@ describe('useScrollProgress', () => {
     act(() => {
       result.current.ref.current = mockElement;
     });
-
-    // The hook should calculate progress
-    // width = (clientWidth / scrollWidth) * 100 = (200 / 500) * 100 = 40
-    // left = (scrollLeft / scrollWidth) * 100 = (50 / 500) * 100 = 10
-    // This branch (lines 34-37) should be executed
   });
 
   it('executes updateProgress callback with scrollable content', () => {
@@ -103,7 +98,7 @@ describe('useScrollProgress', () => {
       scrollLeft: 100,
       scrollWidth: 1000,
       clientWidth: 200,
-      addEventListener: jest.fn((event, handler, options) => {
+      addEventListener: jest.fn((event, handler) => {
         if (event === 'scroll') {
           scrollHandler = handler as () => void;
         }
@@ -120,13 +115,11 @@ describe('useScrollProgress', () => {
     act(() => {
       if (scrollHandler) {
         // Update scrollLeft to simulate scrolling
-        (mockElement as any).scrollLeft = 200;
+        (mockElement as { scrollLeft: number }).scrollLeft = 200;
         scrollHandler();
       }
     });
 
-    // Verify event listener setup was attempted (line 46)
-    // Note: In a real scenario, useEffect would attach listeners when element is available
     expect(mockElement.addEventListener).toBeDefined();
   });
 
@@ -229,11 +222,13 @@ describe('useScrollProgress', () => {
 
   it('updates progress on resize event', () => {
     let resizeHandler: ((e: Event) => void) | null = null;
-    const addEventListenerSpy = jest.spyOn(window, 'addEventListener').mockImplementation((event, handler) => {
-      if (event === 'resize') {
-        resizeHandler = handler as (e: Event) => void;
-      }
-    });
+    const addEventListenerSpy = jest
+      .spyOn(window, 'addEventListener')
+      .mockImplementation((event, handler) => {
+        if (event === 'resize') {
+          resizeHandler = handler as (e: Event) => void;
+        }
+      });
 
     const { result } = renderHook(() => useScrollProgress());
 

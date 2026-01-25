@@ -17,17 +17,15 @@ const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = 'mobile_store_cart_v1';
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
-
-  // Load
-  useEffect(() => {
+  // Initialize state from localStorage using lazy initialization
+  const [items, setItems] = useState<CartItem[]>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setItems(JSON.parse(raw));
+      return raw ? JSON.parse(raw) : [];
     } catch {
-      // ignore
+      return [];
     }
-  }, []);
+  });
 
   // Persist
   useEffect(() => {

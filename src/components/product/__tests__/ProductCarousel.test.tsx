@@ -84,12 +84,12 @@ describe('ProductCarousel', () => {
   });
 
   it('renders nothing when products is null', () => {
-    const { container } = render(<ProductCarousel products={null as any} />);
+    const { container } = render(<ProductCarousel products={null as unknown as Phone[]} />);
     expect(container.firstChild).toBeNull();
   });
 
   it('renders nothing when products is undefined', () => {
-    const { container } = render(<ProductCarousel products={undefined as any} />);
+    const { container } = render(<ProductCarousel products={undefined as unknown as Phone[]} />);
     expect(container.firstChild).toBeNull();
   });
 
@@ -127,6 +127,7 @@ describe('ProductCarousel', () => {
   });
 
   it('uses useScrollProgress hook with products as dependency', () => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { useScrollProgress } = require('@/hooks');
     render(<ProductCarousel products={mockProducts} />);
 
