@@ -39,23 +39,32 @@
   flex: 1;
   max-width: 420px;
   margin: 0 auto;
-  padding: 0 16px 0px 16px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
   gap: 80px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .top {
   display: flex;
   gap: 40px;
-  padding: 0 16px;
+  padding: 0;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .top,
 .content,
 .specItem dd {
   min-width: 0;
+}
+
+.content {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .media {
@@ -291,10 +300,12 @@
 /* SPECIFICATIONS  */
 
 .specs {
-  padding: 0 16px;
+  padding: 0;
   display: flex;
   gap: 40px;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
 }
 .specsTitle {
   font-size: 20px;
@@ -306,6 +317,8 @@
 .specList {
   margin: 0;
   padding: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .specItem {

@@ -2,6 +2,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 344px;
   height: 344px;
   padding: 16px;
   gap: 24px;
@@ -117,7 +118,8 @@
 
 @media (min-width: 768px) {
   .card {
-    height: 377px;
+    width: 344px;
+    height: 344px;
     padding: 16px;
     gap: 24px;
   }
