@@ -53,6 +53,13 @@
   scroll-snap-align: start;
 }
 
+/* Tablet */
+@media (min-width: 768px) {
+  .carouselItem {
+    width: 377px;
+  }
+}
+
 /* Progress */
 .progressIndicator {
   height: 3px;
@@ -70,7 +77,7 @@
     width 0.2s ease;
 }
 
-/* Tablet */
+/* Tablet - carousel padding adjustments */
 @media (min-width: 768px) {
   .carousel {
     margin: 0 -40px;

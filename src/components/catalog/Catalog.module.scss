@@ -36,8 +36,8 @@
   }
 
   .grid {
-    grid-template-columns: repeat(2, 1fr);
-    justify-items: center;
+    grid-template-columns: repeat(2, 377px);
+    justify-content: center;
     gap: 0;
   }
 }
