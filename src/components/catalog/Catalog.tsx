@@ -5,8 +5,9 @@ import { Phone } from '@/types';
 import { getPhones } from '@/services/api';
 import { SearchBar } from '@/components/ui';
 import { PhoneCard } from './PhoneCard';
-import styles from './Catalog.module.scss';
+import { useDebounce } from '@/hooks';
 import { dedupeById } from '@/utils/utils';
+import styles from './Catalog.module.scss';
 
 interface CatalogProps {
   initialProducts: Phone[];
@@ -17,10 +18,13 @@ export function Catalog({ initialProducts }: CatalogProps) {
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const debouncedSearch = useDebounce(search, 300);
+
   // Unique phones by id
   const uniquePhones = useMemo(() => dedupeById(phones), [phones]);
+
   useEffect(() => {
-    if (!search) {
+    if (!debouncedSearch) {
       setPhones(initialProducts);
       return;
     }
@@ -28,7 +32,7 @@ export function Catalog({ initialProducts }: CatalogProps) {
     const fetchPhones = async () => {
       setIsLoading(true);
       try {
-        const data = await getPhones(search);
+        const data = await getPhones(debouncedSearch);
         setPhones(data);
       } catch (error) {
         console.error('Error fetching phones:', error);
@@ -37,9 +41,8 @@ export function Catalog({ initialProducts }: CatalogProps) {
       }
     };
 
-    const timer = setTimeout(fetchPhones, 300);
-    return () => clearTimeout(timer);
-  }, [search, initialProducts]);
+    fetchPhones();
+  }, [debouncedSearch, initialProducts]);
 
   return (
     <div className={styles.page}>

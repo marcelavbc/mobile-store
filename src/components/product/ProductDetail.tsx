@@ -1,52 +1,37 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { PhoneDetail, StorageOption, ColorOption } from '@/types';
+import { PhoneDetail } from '@/types';
 import { ProductCarousel } from './ProductCarousel';
-import styles from './ProductDetail.module.scss';
+import { useProductSelection } from '@/hooks';
 import { useCart } from '@/context/CartContext';
+import { generateLineId } from '@/utils/cart';
 import { BackIcon } from '@/components/icons';
+import styles from './ProductDetail.module.scss';
 
 interface ProductDetailProps {
   phone: PhoneDetail;
 }
 
 export function ProductDetail({ phone }: ProductDetailProps) {
-  const [selectedStorage, setSelectedStorage] = useState<StorageOption | null>(null);
-  const [selectedColor, setSelectedColor] = useState<ColorOption | null>(null);
+  const {
+    selectedStorage,
+    selectedColor,
+    handleStorageSelect,
+    handleColorSelect,
+  } = useProductSelection({
+    storageOptions: phone.storageOptions ?? [],
+    colorOptions: phone.colorOptions ?? [],
+  });
 
   const displayPrice = selectedStorage?.price ?? phone.basePrice;
   const mainImage = selectedColor?.imageUrl ?? phone.colorOptions?.[0]?.imageUrl ?? null;
 
   const isAddToCartEnabled = selectedStorage !== null && selectedColor !== null;
   const { addItem } = useCart();
-
-  const handleStorageSelect = useCallback(
-    (storage: StorageOption) => {
-      setSelectedStorage(storage);
-
-      setSelectedColor((prev) => {
-        if (prev) return prev;
-        return phone.colorOptions?.[0] ?? null;
-      });
-    },
-    [phone.colorOptions]
-  );
-
-  const handleColorSelect = useCallback(
-    (color: ColorOption) => {
-      setSelectedColor(color);
-
-      setSelectedStorage((prev) => {
-        if (prev) return prev;
-        return phone.storageOptions?.[0] ?? null;
-      });
-    },
-    [phone.storageOptions]
-  );
 
   const specs = useMemo(
     () =>
@@ -155,19 +140,19 @@ export function ProductDetail({ phone }: ProductDetailProps) {
               className={styles.cta}
               disabled={!isAddToCartEnabled}
               onClick={() => {
-                if (!isAddToCartEnabled) return;
+                if (!isAddToCartEnabled || !selectedStorage || !selectedColor) return;
 
-                const lineId = `${phone.id}-${selectedStorage!.capacity}-${selectedColor!.hexCode}`;
+                const lineId = generateLineId(phone.id, selectedStorage.capacity, selectedColor.hexCode);
 
                 addItem({
                   lineId,
                   phoneId: phone.id,
                   name: phone.name,
                   brand: phone.brand,
-                  imageUrl: selectedColor!.imageUrl ?? null,
-                  storage: selectedStorage!.capacity,
-                  colorName: selectedColor!.name,
-                  colorHex: selectedColor!.hexCode,
+                  imageUrl: selectedColor.imageUrl ?? null,
+                  storage: selectedStorage.capacity,
+                  colorName: selectedColor.name,
+                  colorHex: selectedColor.hexCode,
                   unitPrice: displayPrice,
                 });
               }}

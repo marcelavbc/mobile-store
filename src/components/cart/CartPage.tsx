@@ -2,19 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useMemo } from 'react';
 import { useCart } from '@/context/CartContext';
+import { generateLineId, getCartItemName } from '@/utils/cart';
 import styles from './CartPage.module.scss';
 
 export function CartPage() {
-  const { items, removeItem } = useCart();
-  const count = items?.length ?? 0;
-
-  const totalPrice = useMemo(
-    () => (items ?? []).reduce((sum, item) => sum + (item.unitPrice ?? 0), 0),
-    [items]
-  );
-
+  const { items, removeItem, totalPrice, count } = useCart();
   const isEmpty = count === 0;
 
   return (
@@ -34,10 +27,9 @@ export function CartPage() {
         ) : (
           <>
             <ul className={styles.list}>
-              {items.map((item: any) => {
-                const key =
-                  item.lineId ?? item.id ?? `${item.phoneId}-${item.storage}-${item.colorHex}`;
-                const name = item.name ?? `${item.brand ?? ''} ${item.model ?? ''}`.trim();
+              {items.map((item) => {
+                const key = item.lineId || generateLineId(item.phoneId, item.storage, item.colorHex);
+                const name = getCartItemName(item);
 
                 return (
                   <li key={key} className={styles.row}>

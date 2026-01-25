@@ -223,10 +223,17 @@ describe('Catalog', () => {
     const clearButton = screen.getByTestId('clear-button');
     await user.click(clearButton);
 
+    // Advance timers to allow debounce to complete
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+
     // Should show initial products again
-    expect(screen.getByTestId('phone-card-1')).toBeInTheDocument();
-    expect(screen.getByTestId('phone-card-2')).toBeInTheDocument();
-    expect(screen.getByTestId('results-count')).toHaveTextContent('2 RESULTS');
+    await waitFor(() => {
+      expect(screen.getByTestId('phone-card-1')).toBeInTheDocument();
+      expect(screen.getByTestId('phone-card-2')).toBeInTheDocument();
+      expect(screen.getByTestId('results-count')).toHaveTextContent('2 RESULTS');
+    });
   });
 
   it('cancels previous search when new search is initiated', async () => {
@@ -282,9 +289,16 @@ describe('Catalog', () => {
     // Clear by deleting all text
     await user.clear(searchInput);
 
+    // Advance timers to allow debounce to complete
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+
     // Should show initial products without API call
-    expect(screen.getByTestId('phone-card-1')).toBeInTheDocument();
-    expect(screen.getByTestId('phone-card-2')).toBeInTheDocument();
-    expect(screen.getByTestId('results-count')).toHaveTextContent('2 RESULTS');
+    await waitFor(() => {
+      expect(screen.getByTestId('phone-card-1')).toBeInTheDocument();
+      expect(screen.getByTestId('phone-card-2')).toBeInTheDocument();
+      expect(screen.getByTestId('results-count')).toHaveTextContent('2 RESULTS');
+    });
   });
 });
