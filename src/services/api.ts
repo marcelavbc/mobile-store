@@ -17,23 +17,32 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_URL?.replace(/\/$/, '')}${endpoint}`;
 
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': API_KEY || '',
-      ...options.headers,
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY || '',
+        ...options.headers,
+      },
+    });
 
-  if (!response.ok) {
-    if (response.status === 401) {
-      throw new Error('Invalid API key');
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Invalid API key');
+      }
+      throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
-    throw new Error(`API Error: ${response.status} ${response.statusText}`);
-  }
 
-  return response.json();
+    return response.json();
+  } catch (error) {
+    // Handle network errors (fetch fails, no internet, etc.)
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw new Error('Network error. Please check your connection and try again.');
+    }
+    // Re-throw other errors (including API errors)
+    throw error;
+  }
 }
 
 // ============================================
