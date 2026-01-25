@@ -3,24 +3,26 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
+import { useTranslations } from 'next-intl';
 import { generateLineId, getCartItemName } from '@/utils/cart';
 import styles from './CartPage.module.scss';
 
 export function CartPage() {
   const { items, removeItem, totalPrice, count } = useCart();
+  const t = useTranslations();
   const isEmpty = count === 0;
 
   return (
     <main className={styles.page}>
       <div className={styles.container}>
-        <h1 className={styles.title}>CART ({count})</h1>
+        <h1 className={styles.title}>{t('cart.title', { count })}</h1>
 
         {isEmpty ? (
           <>
             <div className={styles.spacer} />
             <div className={styles.bottom}>
               <Link className={styles.continue} href="/">
-                CONTINUE SHOPPING
+                {t('common.continueShopping')}
               </Link>
             </div>
           </>
@@ -53,16 +55,16 @@ export function CartPage() {
                             {item.storage} | {item.colorName}
                           </p>
                         </div>
-                        <p className={styles.price}>{item.unitPrice} EUR</p>
+                        <p className={styles.price}>{t('product.price', { price: item.unitPrice })}</p>
                       </div>
 
                       <button
                         type="button"
                         className={styles.remove}
                         onClick={() => removeItem(key)}
-                        aria-label={`Remove ${name} from cart`}
+                        aria-label={t('cart.removeItem', { name })}
                       >
-                        Delete
+                        {t('common.delete')}
                       </button>
                     </div>
                   </li>
@@ -72,25 +74,27 @@ export function CartPage() {
 
             <div className={styles.footer}>
               <div className={styles.totalRow}>
-                <span className={styles.totalLabel}>TOTAL</span>
-                <span className={styles.totalValue}>{totalPrice} EUR</span>
+                <span className={styles.totalLabel}>{t('common.total')}</span>
+                <span className={styles.totalValue}>{t('product.price', { price: totalPrice })}</span>
               </div>
               <div className={styles.actions}>
                 <Link className={styles.continueFooter} href="/">
-                  CONTINUE SHOPPING
+                  {t('common.continueShopping')}
                 </Link>
-                <button type="button" className={styles.pay} aria-label="Proceed to payment">
-                  PAY
+                <button type="button" className={styles.pay} aria-label={t('cart.proceedToPayment')}>
+                  {t('common.pay')}
                 </button>
               </div>
               <div className={styles.footerActions}>
                 <Link className={styles.continueFooter} href="/">
-                  CONTINUE SHOPPING
+                  {t('common.continueShopping')}
                 </Link>
                 <div className={styles.totalAndPay}>
-                  <span className={styles.totalTextInline}>TOTAL {totalPrice} EUR</span>
-                  <button type="button" className={styles.pay} aria-label="Proceed to payment">
-                    PAY
+                  <span className={styles.totalTextInline}>
+                    {t('common.total')} {t('product.price', { price: totalPrice })}
+                  </span>
+                  <button type="button" className={styles.pay} aria-label={t('cart.proceedToPayment')}>
+                    {t('common.pay')}
                   </button>
                 </div>
               </div>

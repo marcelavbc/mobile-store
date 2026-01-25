@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { CartProvider } from '@/context/CartContext';
 import { Navbar } from '@/components/layout';
+import { defaultLocale } from '../../i18n';
 import './globals.scss';
 
 export const metadata: Metadata = {
@@ -8,18 +11,22 @@ export const metadata: Metadata = {
   description: 'Zara Challenge',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const messages = await getMessages({ locale: defaultLocale });
+
   return (
-    <html lang="en">
+    <html lang={defaultLocale}>
       <body>
-        <CartProvider>
-          <Navbar />
-          {children}
-        </CartProvider>
+        <NextIntlClientProvider messages={messages} locale={defaultLocale}>
+          <CartProvider>
+            <Navbar />
+            {children}
+          </CartProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

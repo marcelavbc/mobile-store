@@ -45,11 +45,11 @@ describe('SearchBar', () => {
     const { rerender } = render(<SearchBar {...defaultProps} />);
 
     const input = screen.getByPlaceholderText('Search for a smartphone...');
-    
+
     // Simulate controlled component behavior by updating value prop
     await user.type(input, 'A');
     expect(mockOnChange).toHaveBeenCalledTimes(1);
-    
+
     // Re-render with the new value to simulate the controlled component
     rerender(<SearchBar {...defaultProps} value="A" />);
     expect(input).toHaveValue('A');
@@ -167,7 +167,9 @@ describe('SearchBar', () => {
   });
 
   it('handles isLoading transition from false to true', () => {
-    const { rerender } = render(<SearchBar {...defaultProps} resultsCount={10} isLoading={false} />);
+    const { rerender } = render(
+      <SearchBar {...defaultProps} resultsCount={10} isLoading={false} />
+    );
 
     expect(screen.getByText('10 RESULTS')).toBeInTheDocument();
 

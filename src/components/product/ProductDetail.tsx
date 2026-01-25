@@ -8,6 +8,7 @@ import { PhoneDetail } from '@/types';
 import { ProductCarousel } from './ProductCarousel';
 import { useProductSelection } from '@/hooks';
 import { useCart } from '@/context/CartContext';
+import { useTranslations } from 'next-intl';
 import { generateLineId } from '@/utils/cart';
 import { BackIcon } from '@/components/icons';
 import styles from './ProductDetail.module.scss';
@@ -17,6 +18,7 @@ interface ProductDetailProps {
 }
 
 export function ProductDetail({ phone }: ProductDetailProps) {
+  const t = useTranslations();
   const {
     selectedStorage,
     selectedColor,
@@ -37,19 +39,19 @@ export function ProductDetail({ phone }: ProductDetailProps) {
   const specs = useMemo(
     () =>
       [
-        { label: 'Brand', value: phone.brand },
-        { label: 'Name', value: phone.name },
-        { label: 'Description', value: phone.description },
-        { label: 'Screen', value: phone.specs?.screen },
-        { label: 'Resolution', value: phone.specs?.resolution },
-        { label: 'Processor', value: phone.specs?.processor },
-        { label: 'Main camera', value: phone.specs?.mainCamera },
-        { label: 'Selfie camera', value: phone.specs?.selfieCamera },
-        { label: 'Battery', value: phone.specs?.battery },
-        { label: 'OS', value: phone.specs?.os },
-        { label: 'Screen refresh rate', value: phone.specs?.screenRefreshRate },
+        { label: t('product.specLabels.brand'), value: phone.brand },
+        { label: t('product.specLabels.name'), value: phone.name },
+        { label: t('product.specLabels.description'), value: phone.description },
+        { label: t('product.specLabels.screen'), value: phone.specs?.screen },
+        { label: t('product.specLabels.resolution'), value: phone.specs?.resolution },
+        { label: t('product.specLabels.processor'), value: phone.specs?.processor },
+        { label: t('product.specLabels.mainCamera'), value: phone.specs?.mainCamera },
+        { label: t('product.specLabels.selfieCamera'), value: phone.specs?.selfieCamera },
+        { label: t('product.specLabels.battery'), value: phone.specs?.battery },
+        { label: t('product.specLabels.os'), value: phone.specs?.os },
+        { label: t('product.specLabels.screenRefreshRate'), value: phone.specs?.screenRefreshRate },
       ].filter((item) => Boolean(item.value)),
-    [phone]
+    [phone, t]
   );
 
   return (
@@ -57,7 +59,7 @@ export function ProductDetail({ phone }: ProductDetailProps) {
       <header className={styles.header}>
         <Link className={styles.back} href="/">
           <BackIcon />
-          BACK
+          {t('common.back')}
         </Link>
       </header>
 
@@ -77,7 +79,7 @@ export function ProductDetail({ phone }: ProductDetailProps) {
                   priority
                 />
               ) : (
-                <div className={styles.imageFallback}>No image</div>
+                <div className={styles.imageFallback}>{t('product.noImage')}</div>
               )}
             </div>
           </section>
@@ -89,7 +91,9 @@ export function ProductDetail({ phone }: ProductDetailProps) {
                 {phone.brand} {phone.name}
               </h1>
               <p className={styles.price}>
-                {selectedStorage ? `${displayPrice} EUR` : `From ${phone.basePrice} EUR`}
+                {selectedStorage
+                  ? t('product.price', { price: displayPrice })
+                  : t('product.fromPrice', { price: phone.basePrice })}
               </p>
             </div>
 
@@ -97,8 +101,8 @@ export function ProductDetail({ phone }: ProductDetailProps) {
             <div className={styles.purchase}>
               {/* Storage */}
               <div className={styles.section}>
-                <p className={styles.sectionTitle}>Storage ¿How much space do you need?</p>
-                <div className={styles.storageGroup} role="group" aria-label="Storage">
+                <p className={styles.sectionTitle}>{t('product.storageTitle')}</p>
+                <div className={styles.storageGroup} role="group" aria-label={t('product.ariaLabels.storage')}>
                   {(phone.storageOptions ?? []).map((s) => (
                     <button
                       key={s.capacity}
@@ -115,16 +119,16 @@ export function ProductDetail({ phone }: ProductDetailProps) {
 
               {/* Colors */}
               <div className={styles.section}>
-                <p className={styles.sectionTitle}>Color (pick your favourite)</p>
+                <p className={styles.sectionTitle}>{t('product.colorTitle')}</p>
 
-                <div className={styles.colors} role="group" aria-label="Color">
+                <div className={styles.colors} role="group" aria-label={t('product.ariaLabels.color')}>
                   {(phone.colorOptions ?? []).map((c) => (
                     <button
                       key={`${c.hexCode}-${c.name}`}
                       type="button"
                       className={styles.color}
                       title={c.name}
-                      aria-label={`Color: ${c.name}`}
+                      aria-label={t('product.ariaLabels.colorOption', { name: c.name })}
                       aria-pressed={selectedColor?.hexCode === c.hexCode}
                       style={{ background: c.hexCode }}
                       onClick={() => handleColorSelect(c)}
@@ -164,18 +168,18 @@ export function ProductDetail({ phone }: ProductDetailProps) {
                 }, 2000);
               }}
             >
-              {isAdded ? 'Added!' : 'Add to cart'}
+              {isAdded ? t('product.added') : t('product.addToCart')}
             </button>
           </section>
         </div>
 
         <section className={styles.specs}>
-          <h2 className={styles.specsTitle}>Specifications</h2>
+          <h2 className={styles.specsTitle}>{t('product.specifications')}</h2>
 
           <dl className={styles.specList}>
             {specs.map(({ label, value }) => {
               const rowClass =
-                label === 'Description'
+                label === t('product.specLabels.description')
                   ? `${styles.specItem} ${styles.specItemDescription}`
                   : styles.specItem;
 
@@ -190,7 +194,7 @@ export function ProductDetail({ phone }: ProductDetailProps) {
         </section>
 
         {/* Similar */}
-        <ProductCarousel products={phone.similarProducts ?? []} title="Similar items" />
+        <ProductCarousel products={phone.similarProducts ?? []} title={t('product.similarItems')} />
       </main>
     </div>
   );

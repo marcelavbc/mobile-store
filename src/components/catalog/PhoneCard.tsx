@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Phone } from '@/types';
+import { useTranslations } from 'next-intl';
 import styles from './PhoneCard.module.scss';
 
 interface PhoneCardProps {
@@ -8,11 +11,17 @@ interface PhoneCardProps {
 }
 
 export function PhoneCard({ phone }: PhoneCardProps) {
+  const t = useTranslations();
+
   return (
     <Link
       href={`/products/${phone.id}`}
       className={styles.card}
-      aria-label={`View details for ${phone.brand} ${phone.name}, ${phone.basePrice} EUR`}
+      aria-label={t('phoneCard.viewDetails', {
+        brand: phone.brand,
+        name: phone.name,
+        price: phone.basePrice,
+      })}
     >
       <div className={styles.imageWrapper}>
         <Image
@@ -29,7 +38,7 @@ export function PhoneCard({ phone }: PhoneCardProps) {
           <span className={styles.brand}>{phone.brand}</span>
           <span className={styles.name}>{phone.name}</span>
         </div>
-        <span className={styles.price}>{phone.basePrice} EUR</span>
+        <span className={styles.price}>{t('product.price', { price: phone.basePrice })}</span>
       </div>
     </Link>
   );

@@ -6,6 +6,7 @@ import { getPhones } from '@/services/api';
 import { SearchBar } from '@/components/ui';
 import { PhoneCard } from './PhoneCard';
 import { useDebounce } from '@/hooks';
+import { useTranslations } from 'next-intl';
 import { dedupeById } from '@/utils/utils';
 import styles from './Catalog.module.scss';
 
@@ -14,6 +15,7 @@ interface CatalogProps {
 }
 
 export function Catalog({ initialProducts }: CatalogProps) {
+  const t = useTranslations();
   const [phones, setPhones] = useState<Phone[]>(initialProducts);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +41,9 @@ export function Catalog({ initialProducts }: CatalogProps) {
         setPhones(data);
       } catch (err) {
         const errorMessage =
-          err instanceof Error ? err.message : 'Failed to search products. Please try again.';
+          err instanceof Error && err.message.includes('Network error')
+            ? t('error.networkError')
+            : t('error.failedToSearch');
         setError(errorMessage);
         setPhones(initialProducts);
       } finally {
@@ -69,16 +73,16 @@ export function Catalog({ initialProducts }: CatalogProps) {
         </section>
         {uniquePhones.length === 0 && !isLoading && !error && search && (
           <div className={styles.emptyState} role="status">
-            <p>No products found for &quot;{search}&quot;</p>
-            <p className={styles.emptyStateHint}>Try a different search term</p>
+            <p>{t('catalog.noProductsFound', { search })}</p>
+            <p className={styles.emptyStateHint}>{t('catalog.tryDifferentSearch')}</p>
           </div>
         )}
         {uniquePhones.length === 0 && !isLoading && !error && !search && (
           <div className={styles.emptyState} role="status">
-            <p>No products available</p>
+            <p>{t('catalog.noProductsAvailable')}</p>
           </div>
         )}
-        <section className={styles.grid} aria-label="Product results">
+        <section className={styles.grid} aria-label={t('product.ariaLabels.productResults')}>
           {uniquePhones.map((phone) => (
             <PhoneCard key={phone.id} phone={phone} />
           ))}

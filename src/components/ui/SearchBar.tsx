@@ -1,5 +1,6 @@
 import styles from './SearchBar.module.scss';
 import { CloseIcon } from '@/components/icons';
+import { useTranslations } from 'next-intl';
 
 interface SearchBarProps {
   value: string;
@@ -16,22 +17,24 @@ export function SearchBar({
   resultsCount,
   isLoading = false,
 }: SearchBarProps) {
+  const t = useTranslations();
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.inputWrapper}>
         <input
           type="text"
           className={styles.input}
-          placeholder="Search for a smartphone..."
+          placeholder={t('search.placeholder')}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          aria-label="Search for a smartphone"
+          aria-label={t('search.ariaLabel')}
         />
         {value && (
           <button
             className={styles.clearButton}
             onClick={onClear}
-            aria-label="Clear search"
+            aria-label={t('search.clear')}
             type="button"
           >
             <CloseIcon />
@@ -40,9 +43,11 @@ export function SearchBar({
       </div>
       <div className={styles.resultsCount} aria-live="polite" aria-atomic="true">
         <span className="visually-hidden">
-          {isLoading ? 'Loading results' : `${resultsCount} product${resultsCount !== 1 ? 's' : ''} found`}
+          {isLoading
+            ? t('common.loading')
+            : t('common.productsFound', { count: resultsCount })}
         </span>
-        {isLoading ? '...' : resultsCount} RESULTS
+        {isLoading ? '...' : resultsCount} {t('common.results')}
       </div>
     </div>
   );

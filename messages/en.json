@@ -1,0 +1,75 @@
+{
+  "common": {
+    "back": "BACK",
+    "continueShopping": "CONTINUE SHOPPING",
+    "delete": "Delete",
+    "pay": "PAY",
+    "total": "TOTAL",
+    "results": "RESULTS",
+    "loading": "Loading results",
+    "productsFound": "{count, plural, =1 {# product found} other {# products found}}"
+  },
+  "navbar": {
+    "goToHome": "Go to home",
+    "goToCart": "Go to cart, cart is empty",
+    "goToCartWithItems": "{count, plural, =1 {Go to cart, # item in cart} other {Go to cart, # items in cart}}"
+  },
+  "search": {
+    "placeholder": "Search for a smartphone...",
+    "ariaLabel": "Search for a smartphone",
+    "clear": "Clear search"
+  },
+  "catalog": {
+    "noProductsFound": "No products found for \"{search}\"",
+    "noProductsAvailable": "No products available",
+    "tryDifferentSearch": "Try a different search term"
+  },
+  "product": {
+    "addToCart": "Add to cart",
+    "added": "Added!",
+    "fromPrice": "From {price} EUR",
+    "price": "{price} EUR",
+    "storageTitle": "Storage ¿How much space do you need?",
+    "colorTitle": "Color (pick your favourite)",
+    "specifications": "Specifications",
+    "similarItems": "Similar items",
+    "noImage": "No image",
+    "specLabels": {
+      "brand": "Brand",
+      "name": "Name",
+      "description": "Description",
+      "screen": "Screen",
+      "resolution": "Resolution",
+      "processor": "Processor",
+      "mainCamera": "Main camera",
+      "selfieCamera": "Selfie camera",
+      "battery": "Battery",
+      "os": "OS",
+      "screenRefreshRate": "Screen refresh rate"
+    },
+    "ariaLabels": {
+      "storage": "Storage",
+      "color": "Color",
+      "colorOption": "Color: {name}",
+      "productResults": "Product results"
+    }
+  },
+  "cart": {
+    "title": "CART ({count})",
+    "removeItem": "Remove {name} from cart",
+    "proceedToPayment": "Proceed to payment"
+  },
+  "error": {
+    "productNotFound": "Product not found",
+    "unableToLoadProduct": "Unable to load product data.",
+    "productNotFoundHint": "The product you're looking for doesn't exist or couldn't be loaded.",
+    "goBackToCatalog": "Go back to catalog",
+    "failedToSearch": "Failed to search products. Please try again.",
+    "networkError": "Network error. Please check your connection and try again.",
+    "invalidApiKey": "Invalid API key",
+    "apiError": "API Error: {status} {statusText}"
+  },
+  "phoneCard": {
+    "viewDetails": "View details for {brand} {name}, {price} EUR"
+  }
+}

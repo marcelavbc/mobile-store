@@ -190,7 +190,8 @@ describe('Catalog', () => {
     // Should show error message to user
     await waitFor(() => {
       expect(screen.getByRole('alert')).toBeInTheDocument();
-      expect(screen.getByText('API Error')).toBeInTheDocument();
+      // Error message comes from translations, check for the translated error message
+      expect(screen.getByText(/Failed to search products/i)).toBeInTheDocument();
     });
 
     // Should still show original products (error doesn't crash the app)
@@ -319,7 +320,8 @@ describe('Catalog', () => {
     // Wait for error to appear
     await waitFor(() => {
       expect(screen.getByRole('alert')).toBeInTheDocument();
-      expect(screen.getByText('API Error')).toBeInTheDocument();
+      // Error message comes from translations
+      expect(screen.getByText(/Failed to search products/i)).toBeInTheDocument();
     });
 
     // Now make a successful search
