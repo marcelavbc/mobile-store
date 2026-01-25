@@ -148,4 +148,45 @@ describe('SearchBar', () => {
     expect(mockOnChange).toHaveBeenCalledTimes(1);
     expect(mockOnChange).toHaveBeenCalledWith('a');
   });
+
+  it('uses default isLoading value when not provided', () => {
+    // Test that isLoading defaults to false (line 17)
+    const propsWithoutIsLoading = {
+      value: '',
+      onChange: mockOnChange,
+      onClear: mockOnClear,
+      resultsCount: 5,
+      // isLoading not provided, should default to false
+    };
+
+    render(<SearchBar {...propsWithoutIsLoading} />);
+
+    // Should show results count, not loading state
+    expect(screen.getByText('5 RESULTS')).toBeInTheDocument();
+    expect(screen.queryByText('... RESULTS')).not.toBeInTheDocument();
+  });
+
+  it('handles isLoading transition from false to true', () => {
+    const { rerender } = render(<SearchBar {...defaultProps} resultsCount={10} isLoading={false} />);
+
+    expect(screen.getByText('10 RESULTS')).toBeInTheDocument();
+
+    // Change to loading
+    rerender(<SearchBar {...defaultProps} resultsCount={10} isLoading={true} />);
+
+    expect(screen.getByText('... RESULTS')).toBeInTheDocument();
+    expect(screen.queryByText('10 RESULTS')).not.toBeInTheDocument();
+  });
+
+  it('handles isLoading transition from true to false', () => {
+    const { rerender } = render(<SearchBar {...defaultProps} resultsCount={15} isLoading={true} />);
+
+    expect(screen.getByText('... RESULTS')).toBeInTheDocument();
+
+    // Change to not loading
+    rerender(<SearchBar {...defaultProps} resultsCount={15} isLoading={false} />);
+
+    expect(screen.getByText('15 RESULTS')).toBeInTheDocument();
+    expect(screen.queryByText('... RESULTS')).not.toBeInTheDocument();
+  });
 });

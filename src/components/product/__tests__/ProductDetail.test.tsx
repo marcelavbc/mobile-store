@@ -440,4 +440,278 @@ describe('ProductDetail', () => {
     // ProductCarousel should still render but empty
     expect(screen.getByTestId('product-carousel')).toBeInTheDocument();
   });
+
+  it('handles phone with null storageOptions', () => {
+    const phoneWithNullStorage: PhoneDetail = {
+      ...mockPhone,
+      storageOptions: null as any,
+    };
+
+    mockUseProductSelection.mockReturnValue({
+      selectedStorage: null,
+      selectedColor: null,
+      handleStorageSelect: mockHandleStorageSelect,
+      handleColorSelect: mockHandleColorSelect,
+      reset: jest.fn(),
+    });
+
+    render(<ProductDetail phone={phoneWithNullStorage} />);
+
+    // Should not crash and should pass empty array to useProductSelection
+    expect(mockUseProductSelection).toHaveBeenCalledWith({
+      storageOptions: [],
+      colorOptions: expect.any(Array),
+    });
+  });
+
+  it('handles phone with undefined storageOptions', () => {
+    const phoneWithUndefinedStorage: PhoneDetail = {
+      ...mockPhone,
+      storageOptions: undefined as any,
+    };
+
+    mockUseProductSelection.mockReturnValue({
+      selectedStorage: null,
+      selectedColor: null,
+      handleStorageSelect: mockHandleStorageSelect,
+      handleColorSelect: mockHandleColorSelect,
+      reset: jest.fn(),
+    });
+
+    render(<ProductDetail phone={phoneWithUndefinedStorage} />);
+
+    expect(mockUseProductSelection).toHaveBeenCalledWith({
+      storageOptions: [],
+      colorOptions: expect.any(Array),
+    });
+  });
+
+  it('handles phone with null colorOptions', () => {
+    const phoneWithNullColor: PhoneDetail = {
+      ...mockPhone,
+      colorOptions: null as any,
+    };
+
+    mockUseProductSelection.mockReturnValue({
+      selectedStorage: null,
+      selectedColor: null,
+      handleStorageSelect: mockHandleStorageSelect,
+      handleColorSelect: mockHandleColorSelect,
+      reset: jest.fn(),
+    });
+
+    render(<ProductDetail phone={phoneWithNullColor} />);
+
+    expect(mockUseProductSelection).toHaveBeenCalledWith({
+      storageOptions: expect.any(Array),
+      colorOptions: [],
+    });
+  });
+
+  it('handles phone with undefined colorOptions', () => {
+    const phoneWithUndefinedColor: PhoneDetail = {
+      ...mockPhone,
+      colorOptions: undefined as any,
+    };
+
+    mockUseProductSelection.mockReturnValue({
+      selectedStorage: null,
+      selectedColor: null,
+      handleStorageSelect: mockHandleStorageSelect,
+      handleColorSelect: mockHandleColorSelect,
+      reset: jest.fn(),
+    });
+
+    render(<ProductDetail phone={phoneWithUndefinedColor} />);
+
+    expect(mockUseProductSelection).toHaveBeenCalledWith({
+      storageOptions: expect.any(Array),
+      colorOptions: [],
+    });
+  });
+
+  it('handles phone with null similarProducts', () => {
+    const phoneWithNullSimilar: PhoneDetail = {
+      ...mockPhone,
+      similarProducts: null as any,
+    };
+
+    render(<ProductDetail phone={phoneWithNullSimilar} />);
+
+    expect(screen.getByTestId('product-carousel')).toBeInTheDocument();
+  });
+
+  it('handles phone with undefined similarProducts', () => {
+    const phoneWithUndefinedSimilar: PhoneDetail = {
+      ...mockPhone,
+      similarProducts: undefined as any,
+    };
+
+    render(<ProductDetail phone={phoneWithUndefinedSimilar} />);
+
+    expect(screen.getByTestId('product-carousel')).toBeInTheDocument();
+  });
+
+  it('does not add to cart when button is disabled and clicked', async () => {
+    const user = userEvent.setup();
+    const mockAddItem = jest.fn();
+
+    mockUseCart.mockReturnValue({
+      items: [],
+      addItem: mockAddItem,
+      removeItem: jest.fn(),
+      clear: jest.fn(),
+      totalPrice: 0,
+      count: 0,
+    });
+
+    mockUseProductSelection.mockReturnValue({
+      selectedStorage: null, // Not selected
+      selectedColor: null, // Not selected
+      handleStorageSelect: mockHandleStorageSelect,
+      handleColorSelect: mockHandleColorSelect,
+      reset: jest.fn(),
+    });
+
+    render(<ProductDetail phone={mockPhone} />);
+
+    const addButton = screen.getByRole('button', { name: /Add to cart/i });
+    expect(addButton).toBeDisabled();
+
+    // Try to click disabled button
+    await user.click(addButton);
+
+    // Should not call addItem because button is disabled and early return
+    expect(mockAddItem).not.toHaveBeenCalled();
+  });
+
+  it('does not add to cart when isAddToCartEnabled is false even if selected', async () => {
+    const user = userEvent.setup();
+    const mockAddItem = jest.fn();
+
+    mockUseCart.mockReturnValue({
+      items: [],
+      addItem: mockAddItem,
+      removeItem: jest.fn(),
+      clear: jest.fn(),
+      totalPrice: 0,
+      count: 0,
+    });
+
+    // Simulate a case where selectedStorage or selectedColor becomes null
+    mockUseProductSelection.mockReturnValue({
+      selectedStorage: mockPhone.storageOptions[0],
+      selectedColor: null, // Missing color
+      handleStorageSelect: mockHandleStorageSelect,
+      handleColorSelect: mockHandleColorSelect,
+      reset: jest.fn(),
+    });
+
+    render(<ProductDetail phone={mockPhone} />);
+
+    const addButton = screen.getByRole('button', { name: /Add to cart/i });
+
+    // Button should be disabled
+    expect(addButton).toBeDisabled();
+
+    // Even if we somehow trigger onClick, it should early return
+    await user.click(addButton);
+    expect(mockAddItem).not.toHaveBeenCalled();
+  });
+
+  it('adds item to cart with null imageUrl when color has no imageUrl', async () => {
+    const user = userEvent.setup();
+    const mockAddItem = jest.fn();
+
+    const colorWithoutImage = {
+      name: 'Black',
+      hexCode: '#000000',
+      imageUrl: null as any,
+    };
+
+    const phoneWithColorNoImage: PhoneDetail = {
+      ...mockPhone,
+      colorOptions: [colorWithoutImage],
+    };
+
+    mockUseCart.mockReturnValue({
+      items: [],
+      addItem: mockAddItem,
+      removeItem: jest.fn(),
+      clear: jest.fn(),
+      totalPrice: 0,
+      count: 0,
+    });
+
+    mockUseProductSelection.mockReturnValue({
+      selectedStorage: phoneWithColorNoImage.storageOptions[0],
+      selectedColor: colorWithoutImage,
+      handleStorageSelect: mockHandleStorageSelect,
+      handleColorSelect: mockHandleColorSelect,
+      reset: jest.fn(),
+    });
+
+    render(<ProductDetail phone={phoneWithColorNoImage} />);
+
+    const addButton = screen.getByRole('button', { name: /Add to cart/i });
+    await user.click(addButton);
+
+    // Should add item with imageUrl as null (line 152: selectedColor.imageUrl ?? null)
+    expect(mockAddItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        imageUrl: null,
+      })
+    );
+  });
+
+  it('executes full onClick handler flow when button is enabled', async () => {
+    const user = userEvent.setup();
+    const mockAddItem = jest.fn();
+    const selectedStorage = mockPhone.storageOptions[1]; // 256GB - 1099
+    const selectedColor = mockPhone.colorOptions[1]; // White
+
+    mockUseCart.mockReturnValue({
+      items: [],
+      addItem: mockAddItem,
+      removeItem: jest.fn(),
+      clear: jest.fn(),
+      totalPrice: 0,
+      count: 0,
+    });
+
+    mockUseProductSelection.mockReturnValue({
+      selectedStorage,
+      selectedColor,
+      handleStorageSelect: mockHandleStorageSelect,
+      handleColorSelect: mockHandleColorSelect,
+      reset: jest.fn(),
+    });
+
+    render(<ProductDetail phone={mockPhone} />);
+
+    const addButton = screen.getByRole('button', { name: /Add to cart/i });
+    expect(addButton).not.toBeDisabled();
+
+    await user.click(addButton);
+
+    // Verify the complete flow: generateLineId is called
+    expect(mockGenerateLineId).toHaveBeenCalledWith(
+      mockPhone.id,
+      selectedStorage.capacity,
+      selectedColor.hexCode
+    );
+
+    // Verify addItem is called with all correct properties (lines 147-157)
+    expect(mockAddItem).toHaveBeenCalledWith({
+      lineId: expect.any(String),
+      phoneId: mockPhone.id,
+      name: mockPhone.name,
+      brand: mockPhone.brand,
+      imageUrl: selectedColor.imageUrl ?? null,
+      storage: selectedStorage.capacity,
+      colorName: selectedColor.name,
+      colorHex: selectedColor.hexCode,
+      unitPrice: selectedStorage.price, // Should use selectedStorage.price, not basePrice
+    });
+  });
 });

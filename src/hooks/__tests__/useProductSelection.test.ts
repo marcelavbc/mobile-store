@@ -240,4 +240,65 @@ describe('useProductSelection', () => {
     expect(result.current.selectedStorage).toBeNull();
     expect(result.current.selectedColor).toBeNull();
   });
+
+  it('works without any parameters', () => {
+    const { result } = renderHook(() => useProductSelection());
+
+    expect(result.current.selectedStorage).toBeNull();
+    expect(result.current.selectedColor).toBeNull();
+    expect(result.current.handleStorageSelect).toBeDefined();
+    expect(result.current.handleColorSelect).toBeDefined();
+    expect(result.current.reset).toBeDefined();
+  });
+
+  it('works with empty object parameter', () => {
+    const { result } = renderHook(() => useProductSelection({}));
+
+    expect(result.current.selectedStorage).toBeNull();
+    expect(result.current.selectedColor).toBeNull();
+  });
+
+  it('handles undefined storageOptions and colorOptions', () => {
+    const { result } = renderHook(() =>
+      useProductSelection({
+        storageOptions: undefined,
+        colorOptions: undefined,
+      })
+    );
+
+    expect(result.current.selectedStorage).toBeNull();
+    expect(result.current.selectedColor).toBeNull();
+  });
+
+  it('auto-selects first color when storage is selected with empty colorOptions', () => {
+    const { result } = renderHook(() =>
+      useProductSelection({
+        storageOptions: mockStorageOptions,
+        colorOptions: [],
+      })
+    );
+
+    act(() => {
+      result.current.handleStorageSelect(mockStorageOptions[0]);
+    });
+
+    expect(result.current.selectedStorage).toBe(mockStorageOptions[0]);
+    expect(result.current.selectedColor).toBeNull(); // No color to auto-select
+  });
+
+  it('auto-selects first storage when color is selected with empty storageOptions', () => {
+    const { result } = renderHook(() =>
+      useProductSelection({
+        storageOptions: [],
+        colorOptions: mockColorOptions,
+      })
+    );
+
+    act(() => {
+      result.current.handleColorSelect(mockColorOptions[0]);
+    });
+
+    expect(result.current.selectedColor).toBe(mockColorOptions[0]);
+    expect(result.current.selectedStorage).toBeNull(); // No storage to auto-select
+  });
 });

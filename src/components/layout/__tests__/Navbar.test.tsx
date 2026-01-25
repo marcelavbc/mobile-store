@@ -169,4 +169,5 @@ describe('Navbar', () => {
     // For this test, we're checking that the component can display different counts
     expect(screen.getByLabelText(/Go to cart/)).toBeInTheDocument();
   });
+
 });
