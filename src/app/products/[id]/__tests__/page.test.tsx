@@ -18,6 +18,11 @@ jest.mock('@/components/product', () => ({
   )),
 }));
 
+// Mock the icons
+jest.mock('@/components/icons', () => ({
+  BackIcon: jest.fn(() => <svg data-testid="back-icon" />),
+}));
+
 describe('Product Page', () => {
   const mockPhone: PhoneDetail = {
     id: '1',
@@ -68,7 +73,7 @@ describe('Product Page', () => {
   });
 
   it('renders error message when API fails', async () => {
-    const errorMessage = 'Product not found';
+    const errorMessage = 'API Error: 404 Not Found';
     (getPhoneById as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
     const params = Promise.resolve({ id: '999' });
@@ -76,8 +81,9 @@ describe('Product Page', () => {
     render(component);
 
     expect(getPhoneById).toHaveBeenCalledWith('999');
-    expect(screen.getByText('Unable to load product')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Product not found' })).toBeInTheDocument();
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
+    expect(screen.getByText(/Go back to catalog/)).toBeInTheDocument();
   });
 
   it('renders default error message when error has no message', async () => {
@@ -87,8 +93,9 @@ describe('Product Page', () => {
     const component = await ProductPage({ params });
     render(component);
 
-    expect(screen.getByText('Unable to load product')).toBeInTheDocument();
+    expect(screen.getByText('Product not found')).toBeInTheDocument();
     expect(screen.getByText('Unable to load product data.')).toBeInTheDocument();
+    expect(screen.getByText(/Go back to catalog/)).toBeInTheDocument();
   });
 
   it('renders main element on success', async () => {

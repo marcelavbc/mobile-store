@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -32,6 +32,7 @@ export function ProductDetail({ phone }: ProductDetailProps) {
 
   const isAddToCartEnabled = selectedStorage !== null && selectedColor !== null;
   const { addItem } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
 
   const specs = useMemo(
     () =>
@@ -137,7 +138,7 @@ export function ProductDetail({ phone }: ProductDetailProps) {
             {/* CTA */}
             <button
               type="button"
-              className={styles.cta}
+              className={`${styles.cta} ${isAdded ? styles.ctaAdded : ''}`}
               disabled={!isAddToCartEnabled}
               onClick={() => {
                 if (!isAddToCartEnabled || !selectedStorage || !selectedColor) return;
@@ -155,9 +156,15 @@ export function ProductDetail({ phone }: ProductDetailProps) {
                   colorHex: selectedColor.hexCode,
                   unitPrice: displayPrice,
                 });
+
+                // Show feedback
+                setIsAdded(true);
+                setTimeout(() => {
+                  setIsAdded(false);
+                }, 2000);
               }}
             >
-              Add to cart
+              {isAdded ? 'Added!' : 'Add to cart'}
             </button>
           </section>
         </div>

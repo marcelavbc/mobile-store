@@ -284,6 +284,23 @@
   cursor: not-allowed;
 }
 
+.ctaAdded {
+  background-color: var(--color-accent) !important;
+  animation: addedPulse 0.3s ease;
+}
+
+@keyframes addedPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .ctaHint {
   margin: 0;
   font-size: 12px;

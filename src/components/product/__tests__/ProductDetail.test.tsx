@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { ProductDetail } from '../ProductDetail';
-import { PhoneDetail } from '@/types';
+import { PhoneDetail, Phone } from '@/types';
 
 // Mock hooks
 jest.mock('@/hooks', () => ({
@@ -37,13 +37,16 @@ jest.mock('next/image', () => ({
   default: function MockImage({
     src,
     alt,
+    className,
     ...props
   }: {
     src: string;
     alt: string;
+    className?: string;
     [key: string]: unknown;
   }) {
-    return <img src={src} alt={alt} data-testid="product-image" {...props} />;
+    // Filter out Next.js Image-specific props (fill, priority, sizes) that aren't valid HTML attributes
+    return <img src={src} alt={alt} data-testid="product-image" className={className} {...props} />;
   },
 }));
 
@@ -463,7 +466,7 @@ describe('ProductDetail', () => {
     const phoneWithNullStorage = {
       ...mockPhone,
       storageOptions: null,
-    } as PhoneDetail;
+    } as unknown as PhoneDetail;
 
     mockUseProductSelection.mockReturnValue({
       selectedStorage: null,
@@ -486,7 +489,7 @@ describe('ProductDetail', () => {
     const phoneWithUndefinedStorage = {
       ...mockPhone,
       storageOptions: undefined,
-    } as PhoneDetail;
+    } as unknown as PhoneDetail;
 
     mockUseProductSelection.mockReturnValue({
       selectedStorage: null,
@@ -508,7 +511,7 @@ describe('ProductDetail', () => {
     const phoneWithNullColor = {
       ...mockPhone,
       colorOptions: null,
-    } as PhoneDetail;
+    } as unknown as PhoneDetail;
 
     mockUseProductSelection.mockReturnValue({
       selectedStorage: null,
@@ -530,7 +533,7 @@ describe('ProductDetail', () => {
     const phoneWithUndefinedColor = {
       ...mockPhone,
       colorOptions: undefined,
-    } as PhoneDetail;
+    } as unknown as PhoneDetail;
 
     mockUseProductSelection.mockReturnValue({
       selectedStorage: null,
@@ -552,7 +555,7 @@ describe('ProductDetail', () => {
     const phoneWithNullSimilar = {
       ...mockPhone,
       similarProducts: null,
-    } as PhoneDetail;
+    } as unknown as PhoneDetail;
 
     render(<ProductDetail phone={phoneWithNullSimilar} />);
 
@@ -563,7 +566,7 @@ describe('ProductDetail', () => {
     const phoneWithUndefinedSimilar = {
       ...mockPhone,
       similarProducts: undefined,
-    } as PhoneDetail;
+    } as unknown as PhoneDetail;
 
     render(<ProductDetail phone={phoneWithUndefinedSimilar} />);
 
@@ -645,7 +648,7 @@ describe('ProductDetail', () => {
       name: 'Black',
       hexCode: '#000000',
       imageUrl: null,
-    } as PhoneDetail['colorOptions'][0];
+    } as unknown as PhoneDetail['colorOptions'][0];
 
     const phoneWithColorNoImage: PhoneDetail = {
       ...mockPhone,
@@ -731,5 +734,51 @@ describe('ProductDetail', () => {
       colorHex: selectedColor.hexCode,
       unitPrice: selectedStorage.price, // Should use selectedStorage.price, not basePrice
     });
+  });
+
+  it('shows "Added!" feedback when item is added to cart', async () => {
+    jest.useFakeTimers();
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    const mockAddItem = jest.fn();
+    const selectedStorage = mockPhone.storageOptions[0];
+    const selectedColor = mockPhone.colorOptions[0];
+
+    mockUseCart.mockReturnValue({
+      items: [],
+      addItem: mockAddItem,
+      removeItem: jest.fn(),
+      clear: jest.fn(),
+      totalPrice: 0,
+      count: 0,
+    });
+
+    mockUseProductSelection.mockReturnValue({
+      selectedStorage,
+      selectedColor,
+      handleStorageSelect: mockHandleStorageSelect,
+      handleColorSelect: mockHandleColorSelect,
+      reset: jest.fn(),
+    });
+
+    render(<ProductDetail phone={mockPhone} />);
+
+    const addButton = screen.getByRole('button', { name: /Add to cart/i });
+    await user.click(addButton);
+
+    // Should show "Added!" immediately
+    expect(screen.getByText('Added!')).toBeInTheDocument();
+    expect(addButton).toHaveClass('ctaAdded');
+
+    // After 2 seconds, should return to "Add to cart"
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Add to cart')).toBeInTheDocument();
+      expect(screen.queryByText('Added!')).not.toBeInTheDocument();
+    });
+
+    jest.useRealTimers();
   });
 });
