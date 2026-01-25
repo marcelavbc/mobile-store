@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
-
-const enMessages = require('./messages/en.json');
+import enMessages from './messages/en.json';
 
 // Helper to get nested translation value by dot notation key
 const getNestedValue = (obj, path) => {

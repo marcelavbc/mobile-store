@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import Link from 'next/link';
 import ProductPage from '../page';
 import { getPhoneById } from '@/services/api';
 import { PhoneDetail } from '@/types';
@@ -20,7 +21,7 @@ jest.mock('@/components/product', () => ({
     <div data-testid="product-error">
       <h1>Product not found</h1>
       <p>{message}</p>
-      <a href="/">Go back to catalog</a>
+      <Link href="/">Go back to catalog</Link>
     </div>
   )),
 }));
@@ -121,7 +122,7 @@ describe('Product Page', () => {
 
     const params = Promise.resolve({ id: '999' });
     const component = await ProductPage({ params });
-    const { container } = render(component);
+    render(component);
 
     // ProductError component renders its own <main> element (not wrapped by ProductPage's main)
     // The mock ProductError doesn't render a main, so we check for the error component instead

@@ -8,9 +8,10 @@ import styles from './PhoneCard.module.scss';
 
 interface PhoneCardProps {
   phone: Phone;
+  priority?: boolean;
 }
 
-export function PhoneCard({ phone }: PhoneCardProps) {
+export function PhoneCard({ phone, priority = false }: PhoneCardProps) {
   const t = useTranslations();
 
   return (
@@ -30,6 +31,7 @@ export function PhoneCard({ phone }: PhoneCardProps) {
           fill
           className={styles.image}
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+          priority={priority}
         />
       </div>
 

@@ -41,6 +41,7 @@ Cypress.Commands.add('waitForProducts', assertionActions.verifyProducts);
 
 // TypeScript declarations
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       // Navigation

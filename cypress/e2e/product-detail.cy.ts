@@ -1,4 +1,3 @@
-import { productActions } from '../support/actions/product';
 import { assertionActions } from '../support/actions/assertions';
 
 describe('Product Detail Page', () => {

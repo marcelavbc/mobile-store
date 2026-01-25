@@ -52,7 +52,7 @@ export function Catalog({ initialProducts }: CatalogProps) {
     };
 
     fetchPhones();
-  }, [debouncedSearch, initialProducts]);
+  }, [debouncedSearch, initialProducts, t]);
 
   return (
     <div className={styles.page}>
@@ -83,8 +83,8 @@ export function Catalog({ initialProducts }: CatalogProps) {
           </div>
         )}
         <section className={styles.grid} aria-label={t('product.ariaLabels.productResults')}>
-          {uniquePhones.map((phone) => (
-            <PhoneCard key={phone.id} phone={phone} />
+          {uniquePhones.map((phone, index) => (
+            <PhoneCard key={phone.id} phone={phone} priority={index < 6} />
           ))}
         </section>
       </div>

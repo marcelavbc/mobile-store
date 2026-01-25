@@ -16,6 +16,7 @@ jest.mock('@/components/layout', () => ({
 
 // Mock next-intl (already mocked globally in jest.setup.js, but we need to mock the import)
 jest.mock('next-intl', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const enMessages = require('../../../messages/en.json');
   return {
     NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
@@ -24,6 +25,7 @@ jest.mock('next-intl', () => {
 });
 
 jest.mock('next-intl/server', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const enMessages = require('../../../messages/en.json');
   return {
     getMessages: jest.fn(() => Promise.resolve(enMessages)),
