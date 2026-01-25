@@ -172,7 +172,6 @@ describe('Catalog', () => {
 
   it('handles API errors gracefully', async () => {
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     mockGetPhones.mockRejectedValue(new Error('API Error'));
 
@@ -188,16 +187,15 @@ describe('Catalog', () => {
       jest.advanceTimersByTime(300);
     });
 
-    // Should log error and stop loading
+    // Should show error message to user
     await waitFor(() => {
-      expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching phones:', expect.any(Error));
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+      expect(screen.getByText('API Error')).toBeInTheDocument();
     });
 
     // Should still show original products (error doesn't crash the app)
     expect(screen.getByTestId('phone-card-1')).toBeInTheDocument();
     expect(screen.getByTestId('phone-card-2')).toBeInTheDocument();
-
-    consoleErrorSpy.mockRestore();
   });
 
   it('clears search and shows initial products', async () => {
@@ -300,5 +298,109 @@ describe('Catalog', () => {
       expect(screen.getByTestId('phone-card-2')).toBeInTheDocument();
       expect(screen.getByTestId('results-count')).toHaveTextContent('2 RESULTS');
     });
+  });
+
+  it('clears error message when search is successful', async () => {
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+
+    // First, trigger an error
+    mockGetPhones.mockRejectedValueOnce(new Error('API Error'));
+
+    render(<Catalog initialProducts={mockPhones} />);
+
+    const searchInput = screen.getByTestId('search-input');
+
+    // Type in search input to trigger error
+    await user.type(searchInput, 'test');
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+
+    // Wait for error to appear
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+      expect(screen.getByText('API Error')).toBeInTheDocument();
+    });
+
+    // Now make a successful search
+    mockGetPhones.mockResolvedValueOnce(mockSearchResults);
+    await user.clear(searchInput);
+    await user.type(searchInput, 'iPhone');
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+
+    // Error should be cleared and results should show
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      expect(screen.getByTestId('phone-card-3')).toBeInTheDocument();
+    });
+  });
+
+  it('clears error message when search is cleared', async () => {
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+
+    mockGetPhones.mockRejectedValue(new Error('API Error'));
+
+    render(<Catalog initialProducts={mockPhones} />);
+
+    const searchInput = screen.getByTestId('search-input');
+
+    // Type in search input to trigger error
+    await user.type(searchInput, 'test');
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+
+    // Wait for error to appear
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+    });
+
+    // Clear search
+    const clearButton = screen.getByTestId('clear-button');
+    await user.click(clearButton);
+
+    // Advance timers to allow debounce to complete
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+
+    // Error should be cleared
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    });
+  });
+
+  it('shows empty state message when search returns no results', async () => {
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    mockGetPhones.mockResolvedValue([]);
+
+    render(<Catalog initialProducts={mockPhones} />);
+
+    const searchInput = screen.getByTestId('search-input');
+
+    // Perform search that returns no results
+    await user.type(searchInput, 'nonexistent');
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+
+    // Wait for search to complete
+    await waitFor(() => {
+      expect(mockGetPhones).toHaveBeenCalledWith('nonexistent');
+    });
+
+    // Should show empty state message
+    await waitFor(() => {
+      expect(screen.getByText(/No products found for/)).toBeInTheDocument();
+      expect(screen.getByText(/Try a different search term/)).toBeInTheDocument();
+    });
+  });
+
+  it('shows empty state message when no initial products', () => {
+    render(<Catalog initialProducts={[]} />);
+
+    expect(screen.getByText('No products available')).toBeInTheDocument();
   });
 });

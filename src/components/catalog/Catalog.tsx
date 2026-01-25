@@ -17,6 +17,7 @@ export function Catalog({ initialProducts }: CatalogProps) {
   const [phones, setPhones] = useState<Phone[]>(initialProducts);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const debouncedSearch = useDebounce(search, 300);
 
@@ -26,16 +27,21 @@ export function Catalog({ initialProducts }: CatalogProps) {
   useEffect(() => {
     if (!debouncedSearch) {
       setPhones(initialProducts);
+      setError(null);
       return;
     }
 
     const fetchPhones = async () => {
       setIsLoading(true);
+      setError(null);
       try {
         const data = await getPhones(debouncedSearch);
         setPhones(data);
-      } catch (error) {
-        console.error('Error fetching phones:', error);
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to search products. Please try again.';
+        setError(errorMessage);
+        setPhones(initialProducts);
       } finally {
         setIsLoading(false);
       }
@@ -55,7 +61,23 @@ export function Catalog({ initialProducts }: CatalogProps) {
             resultsCount={uniquePhones.length}
             isLoading={isLoading}
           />
+          {error && (
+            <div className={styles.errorMessage} role="alert" aria-live="polite">
+              {error}
+            </div>
+          )}
         </section>
+        {uniquePhones.length === 0 && !isLoading && !error && search && (
+          <div className={styles.emptyState} role="status">
+            <p>No products found for &quot;{search}&quot;</p>
+            <p className={styles.emptyStateHint}>Try a different search term</p>
+          </div>
+        )}
+        {uniquePhones.length === 0 && !isLoading && !error && !search && (
+          <div className={styles.emptyState} role="status">
+            <p>No products available</p>
+          </div>
+        )}
         <section className={styles.grid} aria-label="Product results">
           {uniquePhones.map((phone) => (
             <PhoneCard key={phone.id} phone={phone} />

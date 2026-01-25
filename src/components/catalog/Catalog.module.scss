@@ -19,12 +19,42 @@
   padding: 12px 0;
   margin: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   
   > * {
     width: 100%;
     max-width: 344px;
   }
+}
+
+.errorMessage {
+  color: var(--color-error);
+  font-size: 14px;
+  text-align: center;
+  padding: 8px 16px;
+  background: #ffebee;
+  border-radius: var(--radius-sm);
+  width: 100%;
+  max-width: 344px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-2xl) var(--spacing-md);
+  color: var(--color-text-secondary);
+
+  p {
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+.emptyStateHint {
+  margin-top: var(--spacing-sm);
+  font-size: 14px;
+  color: var(--color-text-tertiary);
 }
 
 .grid {
@@ -48,6 +78,10 @@
     }
   }
 
+  .errorMessage {
+    max-width: 754px;
+  }
+
   .grid {
     grid-template-columns: repeat(2, 377px);
     justify-content: center;
@@ -61,6 +95,10 @@
     > * {
       max-width: 1720px;
     }
+  }
+
+  .errorMessage {
+    max-width: 1720px;
   }
 
   .grid {

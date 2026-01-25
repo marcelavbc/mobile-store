@@ -65,7 +65,13 @@ describe('Home Page', () => {
   it('handles API errors gracefully', async () => {
     (getPhones as jest.Mock).mockRejectedValueOnce(new Error('API Error'));
 
-    await expect(Home()).rejects.toThrow('API Error');
+    const component = await Home();
+    render(component);
+
+    // Should render Catalog with empty array when API fails
+    expect(getPhones).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId('catalog')).toBeInTheDocument();
+    expect(screen.getByText('0 products')).toBeInTheDocument();
   });
 
   it('renders main element', async () => {
