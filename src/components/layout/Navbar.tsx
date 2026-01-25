@@ -16,8 +16,12 @@ export function Navbar() {
         <Logo />
       </Link>
 
-      <Link href="/cart" className={styles.cartLink} aria-label={`Go to cart (${count} items)`}>
-        <span className={styles.cartPill}>
+      <Link
+        href="/cart"
+        className={styles.cartLink}
+        aria-label={count > 0 ? `Go to cart, ${count} item${count !== 1 ? 's' : ''} in cart` : 'Go to cart, cart is empty'}
+      >
+        <span className={styles.cartPill} aria-hidden="true">
           <CartIcon filled={count > 0} />
           <span className={styles.cartCount}>{count}</span>
         </span>

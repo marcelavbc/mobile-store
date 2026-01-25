@@ -164,6 +164,7 @@ describe('PhoneCard', () => {
 
     const link = screen.getByRole('link');
     expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('aria-label', 'View details for Apple iPhone 15 Pro, 1199 EUR');
   });
 
   it('renders as a clickable card component', () => {

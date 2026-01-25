@@ -38,7 +38,10 @@ export function SearchBar({
           </button>
         )}
       </div>
-      <div className={styles.resultsCount}>
+      <div className={styles.resultsCount} aria-live="polite" aria-atomic="true">
+        <span className="visually-hidden">
+          {isLoading ? 'Loading results' : `${resultsCount} product${resultsCount !== 1 ? 's' : ''} found`}
+        </span>
         {isLoading ? '...' : resultsCount} RESULTS
       </div>
     </div>

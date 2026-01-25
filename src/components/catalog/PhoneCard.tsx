@@ -9,7 +9,11 @@ interface PhoneCardProps {
 
 export function PhoneCard({ phone }: PhoneCardProps) {
   return (
-    <Link href={`/products/${phone.id}`} className={styles.card}>
+    <Link
+      href={`/products/${phone.id}`}
+      className={styles.card}
+      aria-label={`View details for ${phone.brand} ${phone.name}, ${phone.basePrice} EUR`}
+    >
       <div className={styles.imageWrapper}>
         <Image
           src={phone.imageUrl}
