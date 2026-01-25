@@ -16,17 +16,8 @@
 // Import commands.js using ES2015 syntax:
 import './commands';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Import all actions and steps for direct use in tests
+import './index';
 
-// Prevent TypeScript errors
-declare global {
-  namespace Cypress {
-    interface Chainable {
-      waitForProducts(): Chainable<void>;
-      clearCart(): Chainable<void>;
-    }
-  }
-}
-
+// TypeScript declarations are in commands.ts
 export {};

@@ -1,20 +1,19 @@
+import { productActions } from '../support/actions/product';
+import { assertionActions } from '../support/actions/assertions';
+
 describe('Product Detail Page', () => {
   beforeEach(() => {
-    // Navigate to a product from home
-    cy.visit('/');
-    cy.get('a[href^="/products/"]').first().click();
+    cy.goToHome();
+    cy.goToProduct(0);
   });
 
   it('should display product information', () => {
-    cy.get('h1').should('be.visible');
-    cy.contains(/EUR/i).should('be.visible');
+    assertionActions.verifyProductDetail();
   });
 
   it('should have back button to return to home', () => {
     cy.contains(/back/i).should('be.visible');
-    // Back button is a link, find it and click
-    cy.get('a').contains(/back/i).click();
-    cy.url().should('eq', Cypress.config().baseUrl + '/');
+    cy.goBackToHome();
   });
 
   it('should display storage options if available', () => {
@@ -42,31 +41,45 @@ describe('Product Detail Page', () => {
   });
 
   it('should enable add to cart button when storage and color are selected', () => {
+    // First verify the product has both storage and color options
     cy.get('body').then(($body) => {
-      const hasStorage = $body.find('div[role="group"][aria-label*="Storage"]').length > 0;
-      const hasColor = $body.find('div[role="group"][aria-label*="Color"]').length > 0;
+      const hasStorage = $body.find('div[role="group"][aria-label*="Storage"] button').length > 0;
+      const hasColor = $body.find('div[role="group"][aria-label*="Color"] button').length > 0;
 
       if (hasStorage && hasColor) {
-        // Initially disabled
-        cy.contains('button', /add to cart/i).should('be.disabled');
+        // Wait for button to be available and verify it exists
+        cy.contains('button', /add to cart/i, { timeout: 5000 })
+          .should('exist')
+          .as('addToCartButton');
+        
+        // Initially disabled (both storage and color need to be selected)
+        // Note: The hook auto-selects the first color when storage is selected,
+        // and vice versa, so we need to verify the initial state before any clicks
+        cy.get('@addToCartButton').should('be.disabled');
 
-        // Select storage
+        // Select storage - this will auto-select the first color too (hook behavior)
         cy.get('div[role="group"][aria-label*="Storage"]')
           .find('button')
           .first()
           .click();
+        
+        // Wait for React state update
+        cy.wait(200);
 
-        // Still disabled (need color too)
-        cy.contains('button', /add to cart/i).should('be.disabled');
-
-        // Select color
+        // After selecting storage, the hook automatically selects the first color,
+        // so the button should now be enabled (both are selected automatically)
+        cy.get('@addToCartButton').should('not.be.disabled');
+        
+        // Verify that both storage and color are now selected by checking aria-pressed
+        cy.get('div[role="group"][aria-label*="Storage"]')
+          .find('button[aria-pressed="true"]')
+          .should('exist');
         cy.get('div[role="group"][aria-label*="Color"]')
-          .find('button')
-          .first()
-          .click();
-
-        // Now enabled
-        cy.contains('button', /add to cart/i).should('not.be.disabled');
+          .find('button[aria-pressed="true"]')
+          .should('exist');
+      } else {
+        // If product doesn't have both storage and color, skip this test
+        cy.log('Product does not have both storage and color options, skipping test');
       }
     });
   });
