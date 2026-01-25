@@ -62,7 +62,7 @@ describe('Navbar', () => {
   it('renders the cart link', () => {
     renderNavbarWithCart();
 
-    const cartLink = screen.getByLabelText('Go to cart (0 items)');
+    const cartLink = screen.getByLabelText('Go to cart, cart is empty');
     expect(cartLink).toBeInTheDocument();
     expect(cartLink).toHaveAttribute('href', '/cart');
   });
@@ -71,7 +71,7 @@ describe('Navbar', () => {
     renderNavbarWithCart();
 
     expect(screen.getByText('0')).toBeInTheDocument();
-    expect(screen.getByLabelText('Go to cart (0 items)')).toBeInTheDocument();
+    expect(screen.getByLabelText('Go to cart, cart is empty')).toBeInTheDocument();
   });
 
   it('displays correct cart count when cart has items', () => {
@@ -103,10 +103,10 @@ describe('Navbar', () => {
     // Set items in localStorage before rendering
     localStorage.setItem('mobile_store_cart_v1', JSON.stringify(mockItems));
 
-    renderNavbarWithCart(mockItems);
+    renderNavbarWithCart();
 
     expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getByLabelText('Go to cart (2 items)')).toBeInTheDocument();
+    expect(screen.getByLabelText('Go to cart, 2 items in cart')).toBeInTheDocument();
   });
 
   it('shows filled cart icon when cart has items', () => {
@@ -126,7 +126,7 @@ describe('Navbar', () => {
 
     localStorage.setItem('mobile_store_cart_v1', JSON.stringify(mockItems));
 
-    renderNavbarWithCart(mockItems);
+    renderNavbarWithCart();
 
     const cartIcon = screen.getByTestId('cart-icon');
     expect(cartIcon).toHaveAttribute('data-filled', 'true');
@@ -177,5 +177,4 @@ describe('Navbar', () => {
     // For this test, we're checking that the component can display different counts
     expect(screen.getByLabelText(/Go to cart/)).toBeInTheDocument();
   });
-
 });

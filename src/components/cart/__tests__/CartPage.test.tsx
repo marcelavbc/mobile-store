@@ -250,7 +250,7 @@ describe('CartPage', () => {
 
       render(<CartPage />);
 
-      const deleteButton = screen.getByText('Delete');
+      const deleteButton = screen.getByRole('button', { name: /Remove.*from cart/i });
       await user.click(deleteButton);
 
       expect(mockRemoveItem).toHaveBeenCalledWith('item-1');
@@ -276,7 +276,7 @@ describe('CartPage', () => {
 
       render(<CartPage />);
 
-      const deleteButton = screen.getByText('Delete');
+      const deleteButton = screen.getByRole('button', { name: /Remove.*from cart/i });
       await user.click(deleteButton);
 
       expect(mockGenerateLineId).toHaveBeenCalledWith('phone-1', '256GB', '#000000');
@@ -336,10 +336,12 @@ describe('CartPage', () => {
       render(<CartPage />);
 
       // PAY button appears twice (mobile and desktop layouts)
-      const payButtons = screen.getAllByRole('button', { name: 'PAY' });
+      // Search by aria-label since we added accessibility labels
+      const payButtons = screen.getAllByRole('button', { name: 'Proceed to payment' });
       expect(payButtons.length).toBe(2);
       payButtons.forEach(button => {
         expect(button).not.toBeDisabled();
+        expect(button).toHaveTextContent('PAY');
       });
     });
 

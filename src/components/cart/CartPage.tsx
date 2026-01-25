@@ -60,6 +60,7 @@ export function CartPage() {
                         type="button"
                         className={styles.remove}
                         onClick={() => removeItem(key)}
+                        aria-label={`Remove ${name} from cart`}
                       >
                         Delete
                       </button>
@@ -78,7 +79,7 @@ export function CartPage() {
                 <Link className={styles.continueFooter} href="/">
                   CONTINUE SHOPPING
                 </Link>
-                <button type="button" className={styles.pay}>
+                <button type="button" className={styles.pay} aria-label="Proceed to payment">
                   PAY
                 </button>
               </div>
@@ -88,7 +89,7 @@ export function CartPage() {
                 </Link>
                 <div className={styles.totalAndPay}>
                   <span className={styles.totalTextInline}>TOTAL {totalPrice} EUR</span>
-                  <button type="button" className={styles.pay}>
+                  <button type="button" className={styles.pay} aria-label="Proceed to payment">
                     PAY
                   </button>
                 </div>
