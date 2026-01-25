@@ -1,6 +1,8 @@
 .carouselSection {
-  margin-top: 34px;
-  padding: 0 16px;
+  padding: 0 16px 80px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 
   @media (min-width: 768px) {
     padding: 0 40px;
@@ -16,11 +18,10 @@
 }
 
 .title {
-  margin: 0 0 12px 0;
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 20px;
+  font-weight: 300;
   text-transform: uppercase;
-  color: #666;
+  color: var(--color-text-primary);
 }
 
 /* Carousel */
@@ -29,7 +30,6 @@
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  padding: 6px 0;
   margin: 0 -16px;
   padding-left: 16px;
   padding-right: 16px;
@@ -57,7 +57,6 @@
 .progressIndicator {
   height: 3px;
   background: #e6e6e6;
-  margin: 14px 0 0 0;
   position: relative;
   overflow: hidden;
 }

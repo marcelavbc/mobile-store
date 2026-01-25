@@ -148,37 +148,35 @@ export function ProductDetail({ phone }: ProductDetailProps) {
 
                 {selectedColor && <p className={styles.colorName}>{selectedColor.name}</p>}
               </div>
-
-              {/* CTA */}
-              <button
-                type="button"
-                className={styles.cta}
-                disabled={!isAddToCartEnabled}
-                onClick={() => {
-                  if (!isAddToCartEnabled) return;
-
-                  const lineId = `${phone.id}-${selectedStorage!.capacity}-${selectedColor!.hexCode}`;
-
-                  addItem({
-                    lineId,
-                    phoneId: phone.id,
-                    name: phone.name,
-                    brand: phone.brand,
-                    imageUrl: selectedColor!.imageUrl ?? null,
-                    storage: selectedStorage!.capacity,
-                    colorName: selectedColor!.name,
-                    colorHex: selectedColor!.hexCode,
-                    unitPrice: displayPrice,
-                  });
-                }}
-              >
-                Add to cart
-              </button>
             </div>
+            {/* CTA */}
+            <button
+              type="button"
+              className={styles.cta}
+              disabled={!isAddToCartEnabled}
+              onClick={() => {
+                if (!isAddToCartEnabled) return;
+
+                const lineId = `${phone.id}-${selectedStorage!.capacity}-${selectedColor!.hexCode}`;
+
+                addItem({
+                  lineId,
+                  phoneId: phone.id,
+                  name: phone.name,
+                  brand: phone.brand,
+                  imageUrl: selectedColor!.imageUrl ?? null,
+                  storage: selectedStorage!.capacity,
+                  colorName: selectedColor!.name,
+                  colorHex: selectedColor!.hexCode,
+                  unitPrice: displayPrice,
+                });
+              }}
+            >
+              Add to cart
+            </button>
           </section>
         </div>
 
-        {/* Specs: full width */}
         <section className={styles.specs}>
           <h2 className={styles.specsTitle}>Specifications</h2>
 
