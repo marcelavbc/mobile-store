@@ -54,10 +54,12 @@ export function CartPage() {
                     </div>
 
                     <div className={styles.info}>
-                      <p className={styles.productName}>{name}</p>
-                      <p className={styles.meta}>
-                        {item.storage} | {item.colorName}
-                      </p>
+                      <div className={styles.productInfo}>
+                        <p className={styles.productName}>{name}</p>
+                        <p className={styles.meta}>
+                          {item.storage} | {item.colorName}
+                        </p>
+                      </div>
                       <p className={styles.price}>{item.unitPrice} EUR</p>
 
                       <button
