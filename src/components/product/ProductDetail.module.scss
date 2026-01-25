@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #fff;
+  background: var(--color-background);
   display: flex;
   flex-direction: column;
 }
@@ -22,7 +22,7 @@
 
 .back {
   text-decoration: none;
-  color: #111;
+  color: var(--color-text-primary);
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;

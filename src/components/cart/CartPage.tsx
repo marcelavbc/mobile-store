@@ -54,20 +54,22 @@ export function CartPage() {
                     </div>
 
                     <div className={styles.info}>
-                      <div className={styles.productInfo}>
-                        <p className={styles.productName}>{name}</p>
-                        <p className={styles.meta}>
-                          {item.storage} | {item.colorName}
-                        </p>
+                      <div className={styles.productDetails}>
+                        <div className={styles.productInfo}>
+                          <p className={styles.productName}>{name}</p>
+                          <p className={styles.meta}>
+                            {item.storage} | {item.colorName}
+                          </p>
+                        </div>
+                        <p className={styles.price}>{item.unitPrice} EUR</p>
                       </div>
-                      <p className={styles.price}>{item.unitPrice} EUR</p>
 
                       <button
                         type="button"
                         className={styles.remove}
                         onClick={() => removeItem(key)}
                       >
-                        Eliminar
+                        Delete
                       </button>
                     </div>
                   </li>
@@ -80,15 +82,24 @@ export function CartPage() {
                 <span className={styles.totalLabel}>TOTAL</span>
                 <span className={styles.totalValue}>{totalPrice} EUR</span>
               </div>
-
               <div className={styles.actions}>
                 <Link className={styles.continueFooter} href="/">
                   CONTINUE SHOPPING
                 </Link>
-
                 <button type="button" className={styles.pay}>
                   PAY
                 </button>
+              </div>
+              <div className={styles.footerActions}>
+                <Link className={styles.continueFooter} href="/">
+                  CONTINUE SHOPPING
+                </Link>
+                <div className={styles.totalAndPay}>
+                  <span className={styles.totalTextInline}>TOTAL {totalPrice} EUR</span>
+                  <button type="button" className={styles.pay}>
+                    PAY
+                  </button>
+                </div>
               </div>
             </div>
           </>
