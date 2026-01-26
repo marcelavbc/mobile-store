@@ -19,15 +19,11 @@ interface ProductDetailProps {
 
 export function ProductDetail({ phone }: ProductDetailProps) {
   const t = useTranslations();
-  const {
-    selectedStorage,
-    selectedColor,
-    handleStorageSelect,
-    handleColorSelect,
-  } = useProductSelection({
-    storageOptions: phone.storageOptions ?? [],
-    colorOptions: phone.colorOptions ?? [],
-  });
+  const { selectedStorage, selectedColor, handleStorageSelect, handleColorSelect } =
+    useProductSelection({
+      storageOptions: phone.storageOptions ?? [],
+      colorOptions: phone.colorOptions ?? [],
+    });
 
   const displayPrice = selectedStorage?.price ?? phone.basePrice;
   const mainImage = selectedColor?.imageUrl ?? phone.colorOptions?.[0]?.imageUrl ?? null;
@@ -102,7 +98,11 @@ export function ProductDetail({ phone }: ProductDetailProps) {
               {/* Storage */}
               <div className={styles.section}>
                 <p className={styles.sectionTitle}>{t('product.storageTitle')}</p>
-                <div className={styles.storageGroup} role="group" aria-label={t('product.ariaLabels.storage')}>
+                <div
+                  className={styles.storageGroup}
+                  role="group"
+                  aria-label={t('product.ariaLabels.storage')}
+                >
                   {(phone.storageOptions ?? []).map((s) => (
                     <button
                       key={s.capacity}
@@ -121,7 +121,11 @@ export function ProductDetail({ phone }: ProductDetailProps) {
               <div className={styles.section}>
                 <p className={styles.sectionTitle}>{t('product.colorTitle')}</p>
 
-                <div className={styles.colors} role="group" aria-label={t('product.ariaLabels.color')}>
+                <div
+                  className={styles.colors}
+                  role="group"
+                  aria-label={t('product.ariaLabels.color')}
+                >
                   {(phone.colorOptions ?? []).map((c) => (
                     <button
                       key={`${c.hexCode}-${c.name}`}
@@ -147,7 +151,11 @@ export function ProductDetail({ phone }: ProductDetailProps) {
               onClick={() => {
                 if (!isAddToCartEnabled || !selectedStorage || !selectedColor) return;
 
-                const lineId = generateLineId(phone.id, selectedStorage.capacity, selectedColor.hexCode);
+                const lineId = generateLineId(
+                  phone.id,
+                  selectedStorage.capacity,
+                  selectedColor.hexCode
+                );
 
                 addItem({
                   lineId,
@@ -193,7 +201,7 @@ export function ProductDetail({ phone }: ProductDetailProps) {
           </dl>
         </section>
 
-        {/* Similar */}
+        {/* Similar Products*/}
         <ProductCarousel products={phone.similarProducts ?? []} title={t('product.similarItems')} />
       </main>
     </div>

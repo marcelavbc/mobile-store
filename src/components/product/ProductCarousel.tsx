@@ -20,8 +20,8 @@ export function ProductCarousel({ products, title }: ProductCarouselProps) {
       {title && <h2 className={styles.title}>{title}</h2>}
 
       <div ref={carouselRef} className={styles.carousel}>
-        {products.map((product, index) => (
-          <div key={`${product.id}-${index}`} className={styles.carouselItem}>
+        {products.map((product) => (
+          <div key={`${product.id}`} className={styles.carouselItem}>
             <PhoneCard phone={product} />
           </div>
         ))}

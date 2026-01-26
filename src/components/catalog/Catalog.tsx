@@ -84,7 +84,7 @@ export function Catalog({ initialProducts }: CatalogProps) {
         )}
         <section className={styles.grid} aria-label={t('product.ariaLabels.productResults')}>
           {uniquePhones.map((phone, index) => (
-            <PhoneCard key={phone.id} phone={phone} priority={index < 6} />
+            <PhoneCard key={phone.id} phone={phone} priority={index < 10} />
           ))}
         </section>
       </div>

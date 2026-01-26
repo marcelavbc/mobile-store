@@ -5,7 +5,6 @@ import { dedupeById } from '@/utils/utils';
 
 export default async function Home() {
   // Server-side fetch - fast initial load, SEO friendly
-  // Requirement: Show first 20 phones from API
   let initialPhones: Phone[];
   try {
     const allPhones = await getPhones();
