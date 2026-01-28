@@ -1,5 +1,3 @@
-'use client';
-
 import styles from './SearchBar.module.scss';
 import { CloseIcon } from '@/components/icons';
 import { useTranslations } from 'next-intl';
@@ -45,9 +43,7 @@ export function SearchBar({
       </div>
       <div className={styles.resultsCount} aria-live="polite" aria-atomic="true">
         <span className="visually-hidden">
-          {isLoading
-            ? t('common.loading')
-            : t('common.productsFound', { count: resultsCount })}
+          {isLoading ? t('common.loading') : t('common.productsFound', { count: resultsCount })}
         </span>
         {isLoading ? '...' : resultsCount} {t('common.results')}
       </div>
