@@ -17,24 +17,32 @@ const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = 'mobile_store_cart_v1';
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  // Initialize state from localStorage using lazy initialization
-  const [items, setItems] = useState<CartItem[]>(() => {
+  // To avoid hydration errors, we start with an empty cart and then hydrate from localStorage on mount.
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [hasHydrated, setHasHydrated] = useState(false);
+
+  // Hydrate from localStorage (client-only)
+  useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
+      setItems(raw ? (JSON.parse(raw) as CartItem[]) : []);
     } catch {
-      return [];
+      setItems([]);
+    } finally {
+      setHasHydrated(true);
     }
-  });
+  }, []);
 
   // Persist
   useEffect(() => {
+    // Prevent overwriting localStorage with an empty cart before hydration completes
+    if (!hasHydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {
       // ignore
     }
-  }, [items]);
+  }, [items, hasHydrated]);
 
   const addItem = (item: CartItem) => {
     // Spec says: show phones added; no quantity UI in Figma.

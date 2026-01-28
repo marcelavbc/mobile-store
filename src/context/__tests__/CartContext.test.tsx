@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { CartProvider, useCart } from '../CartContext';
 import { CartItem } from '@/types';
@@ -237,7 +237,7 @@ describe('CartContext', () => {
       expect(parsed[0].lineId).toBe('1');
     });
 
-    it('loads cart from localStorage on mount', () => {
+    it('loads cart from localStorage on mount', async () => {
       const initialItems: CartItem[] = [
         {
           lineId: '1',
@@ -260,8 +260,10 @@ describe('CartContext', () => {
         </CartProvider>
       );
 
-      expect(screen.getByTestId('count')).toHaveTextContent('1');
-      expect(screen.getByTestId('total-price')).toHaveTextContent('999');
+      await waitFor(() => {
+        expect(screen.getByTestId('count')).toHaveTextContent('1');
+        expect(screen.getByTestId('total-price')).toHaveTextContent('999');
+      });
     });
 
     it('handles invalid localStorage data gracefully', () => {

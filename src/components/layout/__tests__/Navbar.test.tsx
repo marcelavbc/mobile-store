@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Navbar } from '../Navbar';
 import { CartProvider } from '@/context/CartContext';
 import { CartItem } from '@/types';
@@ -74,7 +74,7 @@ describe('Navbar', () => {
     expect(screen.getByLabelText('Go to cart, cart is empty')).toBeInTheDocument();
   });
 
-  it('displays correct cart count when cart has items', () => {
+  it('displays correct cart count when cart has items', async () => {
     const mockItems: CartItem[] = [
       {
         lineId: '1',
@@ -105,11 +105,13 @@ describe('Navbar', () => {
 
     renderNavbarWithCart();
 
-    expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getByLabelText('Go to cart, 2 items in cart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('2')).toBeInTheDocument();
+      expect(screen.getByLabelText('Go to cart, 2 items in cart')).toBeInTheDocument();
+    });
   });
 
-  it('shows filled cart icon when cart has items', () => {
+  it('shows filled cart icon when cart has items', async () => {
     const mockItems: CartItem[] = [
       {
         lineId: '1',
@@ -128,8 +130,10 @@ describe('Navbar', () => {
 
     renderNavbarWithCart();
 
-    const cartIcon = screen.getByTestId('cart-icon');
-    expect(cartIcon).toHaveAttribute('data-filled', 'true');
+    await waitFor(() => {
+      const cartIcon = screen.getByTestId('cart-icon');
+      expect(cartIcon).toHaveAttribute('data-filled', 'true');
+    });
   });
 
   it('shows empty cart icon when cart is empty', () => {
