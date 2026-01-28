@@ -10,7 +10,7 @@
   top: var(--navbar-height, 80px); /* fallback si no existe la variable */
   z-index: 20;
   background: var(--color-background);
-  padding: 12px 16px;
+  padding: calc(var(--spacing-sm) + var(--spacing-xs)) var(--spacing-md);
   @media (min-width: 768px) {
     padding: 18px 40px 8px 40px;
   }
@@ -26,10 +26,10 @@
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-fast);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--spacing-xs);
   &:hover {
     opacity: 0.7;
   }
@@ -90,7 +90,7 @@
   height: 100%;
   display: grid;
   place-items: center;
-  color: #777;
+  color: var(--color-text-secondary);
   font-size: 14px;
 }
 
@@ -109,7 +109,7 @@
 }
 
 .price {
-  margin: 8px 0 0 0;
+  margin: var(--spacing-sm) 0 0 0;
   font-size: 14px;
   color: var(--color-text-primary);
 }
@@ -157,19 +157,19 @@
 .purchase {
   padding-top: 14px;
   display: grid;
-  gap: 32px;
+  gap: var(--spacing-xl);
 }
 
 .description {
   margin: 0;
-  color: #444;
+  color: var(--color-text-primary);
   font-size: 13px;
   line-height: 1.5;
 }
 
 .section {
   display: grid;
-  gap: 12px;
+  gap: calc(var(--spacing-sm) + var(--spacing-xs));
 }
 
 .sectionTitle {
@@ -186,10 +186,10 @@
 }
 
 .pill {
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 10px 12px;
-  background: #fff;
+  background: var(--color-background);
   cursor: pointer;
   min-width: 88px;
   text-align: left;
@@ -199,19 +199,19 @@
   display: block;
   font-size: 13px;
   font-weight: 600;
-  color: #111;
+  color: var(--color-text-primary);
 }
 
 .pillBottom {
   display: block;
   font-size: 12px;
-  color: #666;
+  color: var(--color-text-secondary);
   margin-top: 2px;
 }
 
 .colors {
   display: flex;
-  gap: 16px;
+  gap: var(--spacing-md);
   align-items: center;
 }
 
@@ -223,11 +223,11 @@
   cursor: pointer;
   flex-shrink: 0;
   transition:
-    border-color 0.2s ease,
+    border-color var(--transition-fast),
     transform 0.1s ease;
 
   &:hover {
-    border-color: #999;
+    border-color: var(--color-secondary);
     transform: scale(1.1);
   }
 
@@ -237,7 +237,7 @@
 }
 
 .color[aria-pressed='true'] {
-  outline: 2px solid #111;
+  outline: 2px solid var(--color-text-primary);
   outline-offset: -2px;
 }
 
@@ -264,12 +264,12 @@
   line-height: 1.2;
   white-space: nowrap;
   transition:
-    opacity 0.2s ease,
-    background-color 0.2s ease;
+    opacity var(--transition-fast),
+    background-color var(--transition-fast);
 
   &:hover:not(:disabled) {
     opacity: 0.9;
-    background-color: #333;
+    background-color: var(--color-primary);
   }
 
   &:active:not(:disabled) {
@@ -304,7 +304,7 @@
 .ctaHint {
   margin: 0;
   font-size: 12px;
-  color: #888;
+  color: var(--color-text-secondary);
   text-align: center;
 }
 
@@ -313,7 +313,7 @@
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 /* SPECIFICATIONS  */
@@ -343,8 +343,8 @@
 .specItem {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 24px;
-  padding: 16px 0;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) 0;
   border-top: 0.5px solid var(--color-border);
   align-items: start;
 }

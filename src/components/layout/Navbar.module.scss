@@ -7,21 +7,21 @@
   justify-content: space-between;
   height: var(--navbar-height);
   width: 100%;
-  padding: 24px 16px; // Mobile
+  padding: var(--spacing-lg) var(--spacing-md); // Mobile
   background-color: var(--color-background);
 }
 
 /* Tablet */
 @media (min-width: 768px) {
   .header {
-    padding: 24px 40px;
+    padding: var(--spacing-lg) 40px;
   }
 }
 
 /* Desktop */
 @media (min-width: 1200px) {
   .header {
-    padding: 24px 100px;
+    padding: var(--spacing-lg) 100px;
   }
 }
 
@@ -46,7 +46,7 @@
   display: inline-flex;
   align-items: center;
   height: 26px;
-  padding: 4px 0;
+  padding: var(--spacing-xs) 0;
   gap: 6px;
 }
 

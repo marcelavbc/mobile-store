@@ -4,8 +4,8 @@
   flex-direction: column;
   width: 344px;
   height: 344px;
-  padding: 16px;
-  gap: 24px;
+  padding: var(--spacing-md);
+  gap: var(--spacing-lg);
   background: var(--color-background);
   text-decoration: none;
   color: var(--color-text-primary);
@@ -21,7 +21,7 @@
     left: 0;
     right: 0;
     height: 0;
-    background-color: #000000;
+    background-color: var(--color-primary);
     transition: height 0.5s ease;
     z-index: 0;
   }
@@ -31,15 +31,15 @@
   }
 
   &:hover {
-    color: #ffffff;
+    color: var(--color-text-white);
     .brand {
       color: rgba(255, 255, 255, 0.7);
     }
     .name {
-      color: #ffffff;
+      color: var(--color-text-white);
     }
     .price {
-      color: #ffffff;
+      color: var(--color-text-white);
     }
   }
 }
@@ -59,7 +59,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 8px;
+  gap: var(--spacing-sm);
 }
 
 .details {
