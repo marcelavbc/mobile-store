@@ -7,7 +7,8 @@
     "total": "TOTAL",
     "results": "RESULTS",
     "loading": "Loading results",
-    "productsFound": "{count, plural, =1 {# product found} other {# products found}}"
+    "productsFound": "{count, plural, =1 {# product found} other {# products found}}",
+    "navigation": "Navigation"
   },
   "navbar": {
     "goToHome": "Go to home",
@@ -52,12 +53,15 @@
       "color": "Color",
       "colorOption": "Color: {name}",
       "productResults": "Product results"
-    }
+    },
+    "purchaseSection": "Product configuration"
   },
   "cart": {
     "title": "CART ({count})",
     "removeItem": "Remove {name} from cart",
-    "proceedToPayment": "Proceed to payment"
+    "proceedToPayment": "Proceed to payment",
+    "itemsSection": "Cart items",
+    "summarySection": "Order summary"
   },
   "error": {
     "productNotFound": "Product not found",

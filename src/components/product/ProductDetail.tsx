@@ -52,12 +52,12 @@ export function ProductDetail({ phone }: ProductDetailProps) {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
+      <nav className={styles.header} aria-label={t('common.navigation')}>
         <Link className={styles.back} href="/">
           <BackIcon />
           {t('common.back')}
         </Link>
-      </header>
+      </nav>
 
       <main className={styles.container}>
         {/* Top: Media + Content */}
@@ -94,7 +94,7 @@ export function ProductDetail({ phone }: ProductDetailProps) {
             </div>
 
             {/* Purchase */}
-            <div className={styles.purchase}>
+            <section className={styles.purchase} aria-label={t('product.purchaseSection')}>
               {/* Storage */}
               <div className={styles.section}>
                 <p className={styles.sectionTitle}>{t('product.storageTitle')}</p>
@@ -142,7 +142,7 @@ export function ProductDetail({ phone }: ProductDetailProps) {
 
                 {selectedColor && <p className={styles.colorName}>{selectedColor.name}</p>}
               </div>
-            </div>
+            </section>
             {/* CTA */}
             <button
               type="button"

@@ -28,51 +28,53 @@ export function CartPage() {
           </>
         ) : (
           <>
-            <ul className={styles.list}>
-              {items.map((item) => {
-                const key = item.lineId || generateLineId(item.phoneId, item.storage, item.colorHex);
-                const name = getCartItemName(item);
+            <section className={styles.listSection} aria-label={t('cart.itemsSection')}>
+              <ul className={styles.list}>
+                {items.map((item) => {
+                  const key = item.lineId || generateLineId(item.phoneId, item.storage, item.colorHex);
+                  const name = getCartItemName(item);
 
-                return (
-                  <li key={key} className={styles.row}>
-                    <div className={styles.thumb}>
-                      {item.imageUrl ? (
-                        <Image
-                          src={item.imageUrl}
-                          alt={name}
-                          fill
-                          className={styles.thumbImg}
-                          sizes="90px"
-                        />
-                      ) : null}
-                    </div>
-
-                    <div className={styles.info}>
-                      <div className={styles.productDetails}>
-                        <div className={styles.productInfo}>
-                          <p className={styles.productName}>{name}</p>
-                          <p className={styles.meta}>
-                            {item.storage} | {item.colorName}
-                          </p>
-                        </div>
-                        <p className={styles.price}>{t('product.price', { price: item.unitPrice })}</p>
+                  return (
+                    <li key={key} className={styles.row}>
+                      <div className={styles.thumb}>
+                        {item.imageUrl ? (
+                          <Image
+                            src={item.imageUrl}
+                            alt={name}
+                            fill
+                            className={styles.thumbImg}
+                            sizes="90px"
+                          />
+                        ) : null}
                       </div>
 
-                      <button
-                        type="button"
-                        className={styles.remove}
-                        onClick={() => removeItem(key)}
-                        aria-label={t('cart.removeItem', { name })}
-                      >
-                        {t('common.delete')}
-                      </button>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+                      <div className={styles.info}>
+                        <div className={styles.productDetails}>
+                          <div className={styles.productInfo}>
+                            <p className={styles.productName}>{name}</p>
+                            <p className={styles.meta}>
+                              {item.storage} | {item.colorName}
+                            </p>
+                          </div>
+                          <p className={styles.price}>{t('product.price', { price: item.unitPrice })}</p>
+                        </div>
 
-            <div className={styles.footer}>
+                        <button
+                          type="button"
+                          className={styles.remove}
+                          onClick={() => removeItem(key)}
+                          aria-label={t('cart.removeItem', { name })}
+                        >
+                          {t('common.delete')}
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+
+            <section className={styles.footer} aria-label={t('cart.summarySection')}>
               <div className={styles.totalRow}>
                 <span className={styles.totalLabel}>{t('common.total')}</span>
                 <span className={styles.totalValue}>{t('product.price', { price: totalPrice })}</span>
@@ -98,7 +100,7 @@ export function CartPage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </section>
           </>
         )}
       </div>

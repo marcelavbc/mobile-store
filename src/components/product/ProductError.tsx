@@ -14,12 +14,12 @@ export function ProductError({ message }: ProductErrorProps) {
 
   return (
     <main className={styles.errorPage}>
-      <header className={styles.header}>
+      <nav className={styles.header} aria-label={t('common.navigation')}>
         <Link className={styles.back} href="/">
           <BackIcon />
           {t('common.back')}
         </Link>
-      </header>
+      </nav>
       <div className={styles.errorContainer}>
         <div className={styles.errorContent} role="alert">
           <h1 className={styles.errorTitle}>{t('error.productNotFound')}</h1>

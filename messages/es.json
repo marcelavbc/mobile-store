@@ -7,7 +7,8 @@
     "total": "TOTAL",
     "results": "RESULTADOS",
     "loading": "Cargando resultados",
-    "productsFound": "{count, plural, =1 {# producto encontrado} other {# productos encontrados}}"
+    "productsFound": "{count, plural, =1 {# producto encontrado} other {# productos encontrados}}",
+    "navigation": "Navegación"
   },
   "navbar": {
     "goToHome": "Ir a inicio",
@@ -52,12 +53,15 @@
       "color": "Color",
       "colorOption": "Color: {name}",
       "productResults": "Resultados de productos"
-    }
+    },
+    "purchaseSection": "Configuración del producto"
   },
   "cart": {
     "title": "CARRITO ({count})",
     "removeItem": "Eliminar {name} del carrito",
-    "proceedToPayment": "Proceder al pago"
+    "proceedToPayment": "Proceder al pago",
+    "itemsSection": "Artículos del carrito",
+    "summarySection": "Resumen del pedido"
   },
   "error": {
     "productNotFound": "Producto no encontrado",
