@@ -204,7 +204,7 @@ export function dedupeById<T extends { id: string | number }>(items: T[]): T[] {
 **Usage**: Applied in `src/components/catalog/Catalog.tsx`:
 
 ```typescript
-const uniquePhones = useMemo(() => dedupeById(phones), [phones]);
+const uniquePhones = dedupeById(phones);
 ```
 
 ### 3. Auto-Selection Behavior

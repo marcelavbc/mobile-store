@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { CartItem } from '@/types';
 
 type CartContextValue = {
@@ -48,7 +48,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clear = () => setItems([]);
 
-  const totalPrice = useMemo(() => items.reduce((sum, i) => sum + i.unitPrice, 0), [items]);
+  const totalPrice = items.reduce((sum, i) => sum + i.unitPrice, 0);
   const count = items.length;
 
   const value: CartContextValue = { items, addItem, removeItem, clear, totalPrice, count };

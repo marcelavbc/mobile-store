@@ -23,8 +23,7 @@ export function Catalog({ initialProducts }: CatalogProps) {
 
   const debouncedSearch = useDebounce(search, 300);
 
-  // Unique phones by id
-  const uniquePhones = useMemo(() => dedupeById(phones), [phones]);
+  const uniquePhones = dedupeById(phones);
 
   useEffect(() => {
     if (!debouncedSearch) {

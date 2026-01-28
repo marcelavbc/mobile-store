@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -32,23 +32,19 @@ export function ProductDetail({ phone }: ProductDetailProps) {
   const { addItem } = useCart();
   const [isAdded, setIsAdded] = useState(false);
 
-  const specs = useMemo(
-    () =>
-      [
-        { label: t('product.specLabels.brand'), value: phone.brand },
-        { label: t('product.specLabels.name'), value: phone.name },
-        { label: t('product.specLabels.description'), value: phone.description },
-        { label: t('product.specLabels.screen'), value: phone.specs?.screen },
-        { label: t('product.specLabels.resolution'), value: phone.specs?.resolution },
-        { label: t('product.specLabels.processor'), value: phone.specs?.processor },
-        { label: t('product.specLabels.mainCamera'), value: phone.specs?.mainCamera },
-        { label: t('product.specLabels.selfieCamera'), value: phone.specs?.selfieCamera },
-        { label: t('product.specLabels.battery'), value: phone.specs?.battery },
-        { label: t('product.specLabels.os'), value: phone.specs?.os },
-        { label: t('product.specLabels.screenRefreshRate'), value: phone.specs?.screenRefreshRate },
-      ].filter((item) => Boolean(item.value)),
-    [phone, t]
-  );
+  const specs = [
+    { label: t('product.specLabels.brand'), value: phone.brand },
+    { label: t('product.specLabels.name'), value: phone.name },
+    { label: t('product.specLabels.description'), value: phone.description },
+    { label: t('product.specLabels.screen'), value: phone.specs?.screen },
+    { label: t('product.specLabels.resolution'), value: phone.specs?.resolution },
+    { label: t('product.specLabels.processor'), value: phone.specs?.processor },
+    { label: t('product.specLabels.mainCamera'), value: phone.specs?.mainCamera },
+    { label: t('product.specLabels.selfieCamera'), value: phone.specs?.selfieCamera },
+    { label: t('product.specLabels.battery'), value: phone.specs?.battery },
+    { label: t('product.specLabels.os'), value: phone.specs?.os },
+    { label: t('product.specLabels.screenRefreshRate'), value: phone.specs?.screenRefreshRate },
+  ].filter((item) => Boolean(item.value));
 
   return (
     <div className={styles.page}>

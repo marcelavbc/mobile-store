@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { StorageOption, ColorOption } from '@/types';
 
 interface UseProductSelectionProps {
@@ -29,28 +29,22 @@ export function useProductSelection({
   const [selectedStorage, setSelectedStorage] = useState<StorageOption | null>(defaultStorage);
   const [selectedColor, setSelectedColor] = useState<ColorOption | null>(defaultColor);
 
-  const handleStorageSelect = useCallback(
-    (storage: StorageOption) => {
-      setSelectedStorage(storage);
-      // Auto-select first color if none selected
-      setSelectedColor((prev) => prev || colorOptions[0] || null);
-    },
-    [colorOptions]
-  );
+  const handleStorageSelect = (storage: StorageOption) => {
+    setSelectedStorage(storage);
+    // Auto-select first color if none selected
+    setSelectedColor((prev) => prev || colorOptions[0] || null);
+  };
 
-  const handleColorSelect = useCallback(
-    (color: ColorOption) => {
-      setSelectedColor(color);
-      // Auto-select first storage if none selected
-      setSelectedStorage((prev) => prev || storageOptions[0] || null);
-    },
-    [storageOptions]
-  );
+  const handleColorSelect = (color: ColorOption) => {
+    setSelectedColor(color);
+    // Auto-select first storage if none selected
+    setSelectedStorage((prev) => prev || storageOptions[0] || null);
+  };
 
-  const reset = useCallback(() => {
+  const reset = () => {
     setSelectedStorage(defaultStorage);
     setSelectedColor(defaultColor);
-  }, [defaultStorage, defaultColor]);
+  };
 
   return {
     selectedStorage,
